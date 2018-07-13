@@ -30,8 +30,15 @@ export class HomePage {
   private radar_phs: any;
   private radar_cri: any;
   private radar_kkn: any;
+  private radar_omk: any;
+  private tmdrainfall: any;
   private ud_vill: any;
+  private gs_tmd: any;
+  private gdem: any;
+  private flowacc: any;
+  private lsrisk_mod1: any;
   private longlin_parcel_centroid: any;
+  private rainfall7day: any;
   private ud_rain: any;
   private ud_hp: any;
   private roads: any;
@@ -83,38 +90,92 @@ export class HomePage {
     });
 
     // overlay
+    // Radar From TMD&NECTEC
     const imageUrl = 'http://rain.tvis.in.th/output/';
-
     this.radar_cri = L.imageOverlay(imageUrl + 'CRI.png', [[22.305437, 102.143387], [17.596297, 97.611690]]);
     this.radar_kkn = L.imageOverlay(imageUrl + 'KKN.png', [[18.793550, 105.026265], [14.116192, 100.541459]]);
     this.radar_phs = L.imageOverlay(imageUrl + 'PHS.png', [[19.094393, 102.475537], [14.411350, 97.983591]]);
+    this.radar_omk = L.imageOverlay(imageUrl + 'OMK.png', [[19.904425, 100.770048], [15.630408, 96.114592]]);
 
-    this.ud_prov = L.tileLayer.wms("http://map.nu.ac.th/gs-alr2/ows?", {
-      layers: 'alr:ln9p_prov',
+
+    // Rain WPS GISTNU
+    this.tmdrainfall = L.tileLayer.wms("http://www3.cgistln.nu.ac.th/geoserver/ows?", {
+      layers: 'tmdservices:tmdrainfall',
       format: 'image/png',
       transparent: true,
-      CQL_FILTER: 'prov_code=53',
+      //CQL_FILTER: 'prov_code=53',
       zIndex: 5
     });
 
-    this.ud_amp = L.tileLayer.wms("http://map.nu.ac.th/gs-alr2/ows?", {
-      layers: 'alr:ln9p_amp',
+    this.rainfall7day = L.tileLayer.wms("http://map.nu.ac.th/gs-alr2/ows?", {
+      layers: 'alrmap:rainsplinegrid',
       format: 'image/png',
       transparent: true,
-      CQL_FILTER: 'prov_code=53',
+      //CQL_FILTER: 'prov_code=53',
+      zIndex: 5
+    });
+
+    this.gdem = L.tileLayer.wms("http://www3.cgistln.nu.ac.th/geoserver/ows?", {
+      layers: 'lsnanbasin:gdem',
+      format: 'image/png',
+      transparent: true,
+      //CQL_FILTER: 'prov_code=53',
+      zIndex: 5
+    });
+
+    this.lsrisk_mod1 = L.tileLayer.wms("http://www3.cgistln.nu.ac.th/geoserver/ows?", {
+      layers: 'lsnanbasin:mod1',
+      format: 'image/png',
+      transparent: true,
+      opacity: 0.7,
+      //CQL_FILTER: 'prov_code=53',
+      zIndex: 5
+    });
+
+    this.flowacc = L.tileLayer.wms("http://www3.cgistln.nu.ac.th/geoserver/ows?", {
+      layers: 'lsnanbasin:flowaccm',
+      format: 'image/png',
+      transparent: true,
+      opacity: 0.5,
+      //CQL_FILTER: 'prov_code=53',
+      zIndex: 5
+    });
+
+    this.gs_tmd = L.tileLayer.wms("http://www3.cgistln.nu.ac.th/geoserver/ows?", {
+      layers: 'lsnanbasin:tmdnectec',
+      format: 'image/png',
+      transparent: true,
+      //opacity: 0.5,
+      //CQL_FILTER: 'prov_code=53',
+      zIndex: 5
+    });
+
+    this.ud_prov = L.tileLayer.wms("http://www3.cgistln.nu.ac.th/geoserver/ows?", {
+      layers: 'gistdata:province',
+      format: 'image/png',
+      transparent: true,
+      //CQL_FILTER: 'prov_code=53',
+      zIndex: 5
+    });
+
+    this.ud_amp = L.tileLayer.wms("http://www3.cgistln.nu.ac.th/geoserver/ows?", {
+      layers: 'gistdata:amphoe',
+      format: 'image/png',
+      transparent: true,
+      //CQL_FILTER: 'prov_code=53',
       zIndex: 4
     });
 
-    this.ud_tam = L.tileLayer.wms("http://map.nu.ac.th/gs-alr2/ows?", {
-      layers: 'alr:ln9p_tam',
+    this.ud_tam = L.tileLayer.wms("http://www3.cgistln.nu.ac.th/geoserver/ows?", {
+      layers: 'gistdata:tambon',
       format: 'image/png',
       transparent: true,
-      CQL_FILTER: 'prov_code=53',
+      //CQL_FILTER: 'prov_code=53',
       zIndex: 3
     });
 
-    this.ud_vill = L.tileLayer.wms("http://map.nu.ac.th/gs-alr2/ows?", {
-      layers: 'alr:ln9p_vill',
+    this.ud_vill = L.tileLayer.wms("http://www3.cgistln.nu.ac.th/geoserver/ows?", {
+      layers: 'gistdata:village',
       format: 'image/png',
       transparent: true,
       CQL_FILTER: 'prov_code=53',
@@ -127,40 +188,49 @@ export class HomePage {
     //   transparent: true
     // });
 
-    this.longlin_parcel_centroid = L.tileLayer.wms("http://cgi.uru.ac.th/gs-durian/ows?", {
-      layers: 'longlin:longlin_parcel_centroid',
-      format: 'image/png',
-      transparent: true,
-      styles: 'tree_green',
-      zIndex: 5
-    });
-
-    this.ud_rain = L.tileLayer.wms("http://cgi.uru.ac.th/gs-rain/ows?", {
-      layers: 'rain:rain_now_report_ud_tb',
-      format: 'image/png',
-      transparent: true,
-      zIndex: 5
-    });
-
-    this.ud_hp = L.tileLayer.wms("http://cgi.uru.ac.th/gs-hotspot/ows?", {
-      layers: 'hp:hotspot_ud_today',
-      format: 'image/png',
-      transparent: true,
-      zIndex: 5
-    });
+    /*  this.longlin_parcel_centroid = L.tileLayer.wms("http://cgi.uru.ac.th/gs-durian/ows?", {
+        layers: 'longlin:longlin_parcel_centroid',
+        format: 'image/png',
+        transparent: true,
+        styles: 'tree_green',
+        zIndex: 5
+      });
+  
+      this.ud_rain = L.tileLayer.wms("http://cgi.uru.ac.th/gs-rain/ows?", {
+        layers: 'rain:rain_now_report_ud_tb',
+        format: 'image/png',
+        transparent: true,
+        zIndex: 5
+      });
+  
+      this.ud_hp = L.tileLayer.wms("http://cgi.uru.ac.th/gs-hotspot/ows?", {
+        layers: 'hp:hotspot_ud_today',
+        format: 'image/png',
+        transparent: true,
+        zIndex: 5
+      }); */
 
     this.lyrGroup = {
       lyr: [
         { name: 'ขอบเขตอำเภอ', lyr: 'ud_amp', wms: this.ud_amp.addTo(this.map), type: 'overlay', 'isChecked': true },
         { name: 'ขอบเขตตำบล', lyr: 'ud_tam', wms: this.ud_tam.addTo(this.map), type: 'overlay', 'isChecked': true },
         { name: 'ขอบเขตจังหวัด', lyr: 'ud_prov', wms: this.ud_prov.addTo(this.map), type: 'overlay', 'isChecked': true },
+        { name: 'ข้อมูลภูมิประเทศ', lyr: 'gdem', wms: this.gdem, type: 'overlay', 'isChecked': false },
+        { name: 'ข้อมูลการไหลสะสม', lyr: 'flowacc', wms: this.flowacc, type: 'overlay', 'isChecked': false },
+        { name: 'ข้อมูลพื้นที่เสี่ยงดินถล่ม', lyr: 'lsrisk_mod1', wms: this.lsrisk_mod1.addTo(this.map), type: 'overlay', 'isChecked': true },
+
         { name: 'ข้อมูลฝนจาก Radar: พิษณุโลก', lyr: 'radar_phs', wms: this.radar_phs, type: 'overlay', 'isChecked': false },
         { name: 'ข้อมูลฝนจาก Radar: เชียงราย', lyr: 'radar_cri', wms: this.radar_cri, type: 'overlay', 'isChecked': false },
+        { name: 'ข้อมูลฝนจาก Radar: เชียงใหม่', lyr: 'radar_omk', wms: this.radar_omk, type: 'overlay', 'isChecked': false },
         { name: 'ข้อมูลฝนจาก Radar: ขอนแก่น', lyr: 'radar_kkn', wms: this.radar_kkn, type: 'overlay', 'isChecked': false },
+
+        { name: 'ข้อมูลเรดาร์น้ำฝน(ทุกๆ 10นาที)', lyr: 'gs_tmd', wms: this.gs_tmd, type: 'overlay', 'isChecked': false },
+        { name: 'ฝนรายชั่วโมง(มิลลิเมตร)', lyr: 'tmdrainfall', wms: this.tmdrainfall.addTo(this.map), type: 'overlay', 'isChecked': true },
+        { name: 'ฝนสะสมย้อนหลัง 7 วัน(มิลลิเมตร)', lyr: 'rainfall7day', wms: this.rainfall7day, type: 'overlay', 'isChecked': false },
         { name: 'หมู่บ้าน', lyr: 'ud_vill', wms: this.ud_vill, type: 'overlay', 'isChecked': false },
-        { name: 'แปลงปลูกทุเรียน', lyr: 'longlin_parcel_centroid', wms: this.longlin_parcel_centroid, type: 'overlay', 'isChecked': false },
-        { name: 'สถานีที่มีฝนตก', lyr: 'ud_rain', wms: this.ud_rain.addTo(this.map), type: 'overlay', 'isChecked': true },
-        { name: 'จุดเกิดไฟ', lyr: 'ud_hp', wms: this.ud_hp.addTo(this.map), type: 'overlay', 'isChecked': true },
+        //{ name: 'แปลงปลูกทุเรียน', lyr: 'longlin_parcel_centroid', wms: this.longlin_parcel_centroid, type: 'overlay', 'isChecked': false },
+        //{ name: 'สถานีที่มีฝนตก', lyr: 'ud_rain', wms: this.ud_rain.addTo(this.map), type: 'overlay', 'isChecked': false },
+        //{ name: 'จุดเกิดไฟ', lyr: 'ud_hp', wms: this.ud_hp.addTo(this.map), type: 'overlay', 'isChecked': true },
         { name: 'แผนที่ถนน', lyr: 'roads', wms: this.roads, type: 'base', 'isChecked': false },
         { name: 'แผนที่ภาพดาวเทียม', lyr: 'satellite', wms: this.satellite, type: 'base', 'isChecked': false },
         { name: 'แผนที่ผสม', lyr: 'hybrid', wms: this.hybrid, type: 'base', 'isChecked': false },
