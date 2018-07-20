@@ -8,7 +8,43 @@
 
 
 <ion-content padding class="kanit">
-  <ion-list>
+  <ion-card>
+    <ion-card-header>
+      ปริมาณน้ำฝนปัจจุบัน
+    </ion-card-header>
+    <ion-card-content>
+      <h1> {{ rainnow | number : '1.2-2' }} มม. </h1>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      ปริมาณน้ำฝน 7 วันที่ผ่านมา
+    </ion-card-header>
+    <ion-card-content>
+      <h1>{{ rain7day | number : '1.2-2' }} มม.</h1>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      ปริมาณน้ำฝนสะสม (1 ม.ค. ถึงปัจจุบัน)
+    </ion-card-header>
+    <ion-card-content>
+      <h1> {{ rain2018 | number : '1.2-2' }} มม.</h1>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      ปริมาณน้ำฝนเฉลี่ย 30 ปี ของสัปดาห์ปัจจุบัน
+    </ion-card-header>
+    <ion-card-content>
+      <h1>{{ rainAVWeek | number : '1.2-2' }} มม.</h1>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- <ion-list>
     <button ion-item *ngFor="let r of reports" (click)="viewReportDetail(r)">
       <ion-thumbnail item-left>
         <img [src]="r.photo" *ngIf="r.photo">
@@ -18,8 +54,6 @@
       <p ion-text *ngIf="r.pdate">{{ r.pdesc }}</p>
       <p ion-text *ngIf="r.pdate">lat: {{ r.lat | number}} lon: {{ r.lon | number }}</p>
       <p ion-text color="primary" item-right>View</p>
-
-      <!-- <p ion-text color="danger" *ngIf="!r.desc">เต็มแล้ว</p> -->
     </button>
-  </ion-list>
+  </ion-list> -->
 </ion-content>

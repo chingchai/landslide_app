@@ -25761,6 +25761,14 @@ page-home ion-content .scroll-content {
   margin-top: 0px !important;
 }
 
+page-list .kanit {
+  font-family: 'Kanit';
+}
+
+page-list h3 {
+  font-family: 'Kanit';
+}
+
 page-report {
   background-color: #387ef5;
 }

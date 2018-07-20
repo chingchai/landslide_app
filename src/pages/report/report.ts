@@ -12,10 +12,10 @@ import { ReportProvider } from '../../providers/report/report';
 export class ReportPage {
 
   private parking: any = null;
-  private userProfile: any;
-  private lat: number;
-  private lon: number;
-  private pos: Array<number>;
+  // private userProfile: any;
+  // private lat: number;
+  // private lon: number;
+  // private pos: Array<number>;
 
 
   constructor(
@@ -23,7 +23,7 @@ export class ReportPage {
     public navParams: NavParams,
     private toastCtrl: ToastController,
     private camera: Camera,
-    private http: HttpClient,
+    // private http: HttpClient,
     private loadingCtrl: LoadingController,
     private reportProvider: ReportProvider
     // private facebook: FacebookServiceProvider

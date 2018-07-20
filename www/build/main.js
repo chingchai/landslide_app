@@ -4,91 +4,6 @@ webpackJsonp([4],{
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LayerPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var LayerPage = /** @class */ (function () {
-    function LayerPage(navCtrl, navParams, viewCtrl) {
-        var _this = this;
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.viewCtrl = viewCtrl;
-        this.lyrOver = [];
-        this.lyrBase = [];
-        this.lyrs = navParams.get('lyr');
-        this.lyrs.forEach(function (l) {
-            if (l.type === 'overlay') {
-                _this.lyrOver.push(l);
-            }
-            else {
-                _this.lyrBase.push(l);
-            }
-        });
-    }
-    LayerPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad LayerPage');
-    };
-    LayerPage.prototype.onCheckWms = function (lyr, isChecked) {
-        if (isChecked) {
-            for (var i in this.lyrs) {
-                if (this.lyrs[i].lyr === lyr) {
-                    this.lyrs[i].isChecked = true;
-                }
-            }
-        }
-        else {
-            for (var i in this.lyrs) {
-                if (this.lyrs[i].lyr === lyr) {
-                    this.lyrs[i].isChecked = false;
-                }
-            }
-        }
-    };
-    LayerPage.prototype.onSelect = function (lyr) {
-        for (var i in this.lyrs) {
-            if (this.lyrs[i].type === 'base') {
-                if (this.lyrs[i].lyr === lyr) {
-                    this.lyrs[i].isChecked = true;
-                }
-                else {
-                    this.lyrs[i].isChecked = false;
-                }
-            }
-        }
-    };
-    LayerPage.prototype.dismiss = function () {
-        this.viewCtrl.dismiss(this.lyrs);
-    };
-    LayerPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-layer',template:/*ion-inline-start:"C:\apps\landslide_app\src\pages\layer\layer.html"*/'<ion-header class="kanit">\n\n  <ion-toolbar>\n\n    <ion-title>\n\n      ชั้นข้อมูล\n\n    </ion-title>\n\n    <ion-buttons start>\n\n      <button ion-button (click)="dismiss()">\n\n        <span ion-text color="primary" showWhen="ios">Cancel</span>\n\n        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>\n\n      </button>\n\n    </ion-buttons>\n\n  </ion-toolbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding class="kanit">\n\n  <ion-list>\n\n    <ion-list-header>\n\n      เลือกชั้นข้อมูล\n\n    </ion-list-header>\n\n    <ion-item *ngFor="let o of lyrOver; let i = index">\n\n      <ion-label>{{o.name}}</ion-label>\n\n      <ion-checkbox [(ngModel)]="o.isChecked" (ionChange)="onCheckWms(o.lyr,$event.checked)"></ion-checkbox>\n\n    </ion-item>\n\n  </ion-list>\n\n  <p></p>\n\n  <p></p>\n\n  <ion-list radio-group (ionChange)="onSelect($event)">\n\n    <ion-list-header>\n\n      เลือกแผนที่ฐาน\n\n    </ion-list-header>\n\n\n\n    <ion-item *ngFor="let lyr of lyrBase; let i = index">\n\n      <ion-label>{{lyr.name}}</ion-label>\n\n      <ion-radio [value]="lyr.lyr" [checked]="lyr.isChecked"></ion-radio>\n\n    </ion-item>\n\n  </ion-list>\n\n</ion-content>'/*ion-inline-end:"C:\apps\landslide_app\src\pages\layer\layer.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ViewController */]])
-    ], LayerPage);
-    return LayerPage;
-}());
-
-//# sourceMappingURL=layer.js.map
-
-/***/ }),
-
-/***/ 103:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DetailPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
@@ -224,7 +139,7 @@ var DetailPage = /** @class */ (function () {
     };
     DetailPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-detail',template:/*ion-inline-start:"C:\apps\landslide_app\src\pages\detail\detail.html"*/'<ion-header class="kanit">\n\n\n\n  <ion-navbar>\n\n    <ion-title>รายละเอียด</ion-title>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content padding class="kanit">\n\n  <img [src]="dat.photo" *ngIf="dat.photo">\n\n  <img src="./assets/imgs/no-image.png" *ngIf="!dat.photo">\n\n  <div>\n\n    <ion-icon name="football" item-start large></ion-icon>\n\n    <h2>{{dat.pname}}</h2>\n\n    <p>{{dat.pdesc}}</p>\n\n  </div>\n\n\n\n  <ion-item>\n\n    <span item-left>{{dat.lat}}, {{dat.lon}}</span>\n\n    <button ion-button icon-left clear item-end>\n\n      {{dat.pdate}}\n\n    </button>\n\n  </ion-item>\n\n\n\n  <div id="map2" class="map2"></div>\n\n\n\n\n\n</ion-content>'/*ion-inline-end:"C:\apps\landslide_app\src\pages\detail\detail.html"*/,
+            selector: 'page-detail',template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\detail\detail.html"*/'<ion-header class="kanit">\n\n\n\n  <ion-navbar>\n\n    <ion-title>รายละเอียด</ion-title>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content padding class="kanit">\n\n  <img [src]="dat.photo" *ngIf="dat.photo">\n\n  <img src="./assets/imgs/no-image.png" *ngIf="!dat.photo">\n\n  <div>\n\n    <ion-icon name="football" item-start large></ion-icon>\n\n    <h2>{{dat.pname}}</h2>\n\n    <p>{{dat.pdesc}}</p>\n\n  </div>\n\n\n\n  <ion-item>\n\n    <span item-left>{{dat.lat}}, {{dat.lon}}</span>\n\n    <button ion-button icon-left clear item-end>\n\n      {{dat.pdate}}\n\n    </button>\n\n  </ion-item>\n\n\n\n  <div id="map2" class="map2"></div>\n\n\n\n\n\n</ion-content>'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\detail\detail.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]])
@@ -236,6 +151,91 @@ var DetailPage = /** @class */ (function () {
 
 /***/ }),
 
+/***/ 103:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LayerPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var LayerPage = /** @class */ (function () {
+    function LayerPage(navCtrl, navParams, viewCtrl) {
+        var _this = this;
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.viewCtrl = viewCtrl;
+        this.lyrOver = [];
+        this.lyrBase = [];
+        this.lyrs = navParams.get('lyr');
+        this.lyrs.forEach(function (l) {
+            if (l.type === 'overlay') {
+                _this.lyrOver.push(l);
+            }
+            else {
+                _this.lyrBase.push(l);
+            }
+        });
+    }
+    LayerPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad LayerPage');
+    };
+    LayerPage.prototype.onCheckWms = function (lyr, isChecked) {
+        if (isChecked) {
+            for (var i in this.lyrs) {
+                if (this.lyrs[i].lyr === lyr) {
+                    this.lyrs[i].isChecked = true;
+                }
+            }
+        }
+        else {
+            for (var i in this.lyrs) {
+                if (this.lyrs[i].lyr === lyr) {
+                    this.lyrs[i].isChecked = false;
+                }
+            }
+        }
+    };
+    LayerPage.prototype.onSelect = function (lyr) {
+        for (var i in this.lyrs) {
+            if (this.lyrs[i].type === 'base') {
+                if (this.lyrs[i].lyr === lyr) {
+                    this.lyrs[i].isChecked = true;
+                }
+                else {
+                    this.lyrs[i].isChecked = false;
+                }
+            }
+        }
+    };
+    LayerPage.prototype.dismiss = function () {
+        this.viewCtrl.dismiss(this.lyrs);
+    };
+    LayerPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-layer',template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\layer\layer.html"*/'<ion-header class="kanit">\n\n  <ion-toolbar>\n\n    <ion-title>\n\n      ชั้นข้อมูล\n\n    </ion-title>\n\n    <ion-buttons start>\n\n      <button ion-button (click)="dismiss()">\n\n        <span ion-text color="primary" showWhen="ios">Cancel</span>\n\n        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>\n\n      </button>\n\n    </ion-buttons>\n\n  </ion-toolbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding class="kanit">\n\n  <ion-list>\n\n    <ion-list-header>\n\n      เลือกชั้นข้อมูล\n\n    </ion-list-header>\n\n    <ion-item *ngFor="let o of lyrOver; let i = index">\n\n      <ion-label>{{o.name}}</ion-label>\n\n      <ion-checkbox [(ngModel)]="o.isChecked" (ionChange)="onCheckWms(o.lyr,$event.checked)"></ion-checkbox>\n\n    </ion-item>\n\n  </ion-list>\n\n  <p></p>\n\n  <p></p>\n\n  <ion-list radio-group (ionChange)="onSelect($event)">\n\n    <ion-list-header>\n\n      เลือกแผนที่ฐาน\n\n    </ion-list-header>\n\n\n\n    <ion-item *ngFor="let lyr of lyrBase; let i = index">\n\n      <ion-label>{{lyr.name}}</ion-label>\n\n      <ion-radio [value]="lyr.lyr" [checked]="lyr.isChecked"></ion-radio>\n\n    </ion-item>\n\n  </ion-list>\n\n</ion-content>'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\layer\layer.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ViewController */]])
+    ], LayerPage);
+    return LayerPage;
+}());
+
+//# sourceMappingURL=layer.js.map
+
+/***/ }),
+
 /***/ 104:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -244,7 +244,9 @@ var DetailPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_report_report__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__detail_detail__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__detail_detail__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment__ = __webpack_require__(291);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_moment__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -293,6 +295,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 
 
 
+
 var ListPage = /** @class */ (function () {
     function ListPage(navCtrl, navParams, ref, loadingCtrl, reportProvider) {
         this.navCtrl = navCtrl;
@@ -302,8 +305,27 @@ var ListPage = /** @class */ (function () {
         this.reportProvider = reportProvider;
     }
     ListPage.prototype.ionViewDidLoad = function () {
-        this.loadReport();
+        // this.loadReport();
         // this.content.enableScrollListener();
+        this.loadRain();
+    };
+    ListPage.prototype.loadRain = function () {
+        var _this = this;
+        this.reportProvider.getRain().then(function (res) {
+            var wk = 'wk' + __WEBPACK_IMPORTED_MODULE_4_moment__().weeks();
+            // console.log(res.features[0].properties)
+            _this.reports = res.features[0].properties;
+            _this.rainnow = _this.reports.raincur;
+            _this.rain7day = _this.reports.rain7day;
+            _this.rain2018 = _this.reports.rain2018;
+            _this.rainAVWeek = _this.reports[wk];
+            console.log(_this.rainAVWeek);
+        }, function (error) {
+            console.log(error);
+        });
+    };
+    ListPage.prototype.calWeekNumber = function () {
+        console.log();
     };
     ListPage.prototype.loadReport = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -337,15 +359,12 @@ var ListPage = /** @class */ (function () {
     };
     ListPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-list',template:/*ion-inline-start:"C:\apps\landslide_app\src\pages\list\list.html"*/'<ion-header class="kanit">\n\n\n\n  <ion-navbar>\n\n    <ion-title>แจ้งเตือน</ion-title>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content padding class="kanit">\n\n  <ion-list>\n\n    <button ion-item *ngFor="let r of reports" (click)="viewReportDetail(r)">\n\n      <ion-thumbnail item-left>\n\n        <img [src]="r.photo" *ngIf="r.photo">\n\n        <img src="./assets/imgs/no-image.png" *ngIf="!r.photo">\n\n      </ion-thumbnail>\n\n      <h1>{{ r.pname }}</h1>\n\n      <p ion-text *ngIf="r.pdate">{{ r.pdesc }}</p>\n\n      <p ion-text *ngIf="r.pdate">lat: {{ r.lat | number}} lon: {{ r.lon | number }}</p>\n\n      <p ion-text color="primary" item-right>View</p>\n\n\n\n      <!-- <p ion-text color="danger" *ngIf="!r.desc">เต็มแล้ว</p> -->\n\n    </button>\n\n  </ion-list>\n\n</ion-content>'/*ion-inline-end:"C:\apps\landslide_app\src\pages\list\list.html"*/,
+            selector: 'page-list',template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\list\list.html"*/'<ion-header class="kanit">\n\n\n\n  <ion-navbar>\n\n    <ion-title>แจ้งเตือน</ion-title>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content padding class="kanit">\n\n  <ion-card>\n\n    <ion-card-header>\n\n      ปริมาณน้ำฝนปัจจุบัน\n\n    </ion-card-header>\n\n    <ion-card-content>\n\n      <h1> {{ rainnow | number : \'1.2-2\' }} มม. </h1>\n\n    </ion-card-content>\n\n  </ion-card>\n\n\n\n  <ion-card>\n\n    <ion-card-header>\n\n      ปริมาณน้ำฝน 7 วันที่ผ่านมา\n\n    </ion-card-header>\n\n    <ion-card-content>\n\n      <h1>{{ rain7day | number : \'1.2-2\' }} มม.</h1>\n\n    </ion-card-content>\n\n  </ion-card>\n\n\n\n  <ion-card>\n\n    <ion-card-header>\n\n      ปริมาณน้ำฝนสะสม (1 ม.ค. ถึงปัจจุบัน)\n\n    </ion-card-header>\n\n    <ion-card-content>\n\n      <h1> {{ rain2018 | number : \'1.2-2\' }} มม.</h1>\n\n    </ion-card-content>\n\n  </ion-card>\n\n\n\n  <ion-card>\n\n    <ion-card-header>\n\n      ปริมาณน้ำฝนเฉลี่ย 30 ปี ของสัปดาห์ปัจจุบัน\n\n    </ion-card-header>\n\n    <ion-card-content>\n\n      <h1>{{ rainAVWeek | number : \'1.2-2\' }} มม.</h1>\n\n    </ion-card-content>\n\n  </ion-card>\n\n\n\n  <!-- <ion-list>\n\n    <button ion-item *ngFor="let r of reports" (click)="viewReportDetail(r)">\n\n      <ion-thumbnail item-left>\n\n        <img [src]="r.photo" *ngIf="r.photo">\n\n        <img src="./assets/imgs/no-image.png" *ngIf="!r.photo">\n\n      </ion-thumbnail>\n\n      <h1>{{ r.pname }}</h1>\n\n      <p ion-text *ngIf="r.pdate">{{ r.pdesc }}</p>\n\n      <p ion-text *ngIf="r.pdate">lat: {{ r.lat | number}} lon: {{ r.lon | number }}</p>\n\n      <p ion-text color="primary" item-right>View</p>\n\n    </button>\n\n  </ion-list> -->\n\n</ion-content>'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\list\list.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* ChangeDetectorRef */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */],
-            __WEBPACK_IMPORTED_MODULE_2__providers_report_report__["a" /* ReportProvider */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* ChangeDetectorRef */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__providers_report_report__["a" /* ReportProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_report_report__["a" /* ReportProvider */]) === "function" && _e || Object])
     ], ListPage);
     return ListPage;
+    var _a, _b, _c, _d, _e;
 }());
 
 //# sourceMappingURL=list.js.map
@@ -360,8 +379,7 @@ var ListPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__ = __webpack_require__(162);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common_http__ = __webpack_require__(79);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_report_report__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_report_report__ = __webpack_require__(46);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -375,16 +393,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
 var ReportPage = /** @class */ (function () {
-    function ReportPage(navCtrl, navParams, toastCtrl, camera, http, loadingCtrl, reportProvider
+    // private userProfile: any;
+    // private lat: number;
+    // private lon: number;
+    // private pos: Array<number>;
+    function ReportPage(navCtrl, navParams, toastCtrl, camera, 
+        // private http: HttpClient,
+        loadingCtrl, reportProvider
         // private facebook: FacebookServiceProvider
     ) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.toastCtrl = toastCtrl;
         this.camera = camera;
-        this.http = http;
         this.loadingCtrl = loadingCtrl;
         this.reportProvider = reportProvider;
         this.parking = null;
@@ -472,19 +494,12 @@ var ReportPage = /** @class */ (function () {
     };
     ReportPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-report',template:/*ion-inline-start:"C:\apps\landslide_app\src\pages\report\report.html"*/'<ion-header class="kanit">\n\n  <ion-navbar color="pk-gold">\n\n    <ion-title>เพิ่มรายงาน</ion-title>\n\n    <ion-buttons end>\n\n      <button ion-button color="primary" icon-left (click)="save()" [disabled]="name.errors && (name.dirty || name.touched)">\n\n        <ion-icon name="create"></ion-icon>\n\n        SAVE\n\n      </button>\n\n    </ion-buttons>\n\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content class="kanit">\n\n  <ion-item-group>\n\n    <ion-item-divider color="light">รายละเอียดสถานที่</ion-item-divider>\n\n    <ion-item>\n\n      <ion-label stacked>สถานที่</ion-label>\n\n      <ion-input type="text" [(ngModel)]="parking.pname" id="name" #name="ngModel" placeholder="ชื่อสถานที่" required></ion-input>\n\n    </ion-item>\n\n    <div padding class="error-border" *ngIf="name.errors && (name.dirty || name.touched)">กรุณากรอกข้อมูลสถานที่</div>\n\n    <ion-item>\n\n      <ion-label stacked>รายละเอียด</ion-label>\n\n      <ion-textarea [(ngModel)]="parking.pdesc" placeholder="เพิ่มรายละเอียดข้อมูลสถานที่ "></ion-textarea>\n\n    </ion-item>\n\n    <p padding>lat: {{parking.lat | number}} lon: {{parking.lon | number}}</p>\n\n  </ion-item-group>\n\n  <ion-item-group>\n\n    <ion-item-divider color="light">รูปสถานที่</ion-item-divider>\n\n    <ion-card>\n\n      <ion-item>\n\n        <ion-avatar item-left>\n\n          <img src="./assets/imgs/no-person.jpg">\n\n        </ion-avatar>\n\n        <h2>Take or Browse Picture</h2>\n\n        <p>รูปภาพสถานที่</p>\n\n      </ion-item>\n\n      <img [src]="parking.photo" *ngIf="parking.photo">\n\n      <img src="./assets/imgs/no-image.jpg" *ngIf="!parking.photo" padding>\n\n      <ion-row>\n\n        <ion-col>\n\n          <button ion-button clear small icon-left (click)="takePicture()">\n\n            <ion-icon name="camera"></ion-icon>\n\n            <div>ถ่ายภาพ</div>\n\n          </button>\n\n        </ion-col>\n\n        <ion-col>\n\n          <button ion-button clear small icon-left (click)="browsePicture()">\n\n            <ion-icon name="folder-open"></ion-icon>\n\n            <div>เลือกรูป</div>\n\n          </button>\n\n        </ion-col>\n\n        <ion-col>\n\n          <button ion-button clear small color="danger" icon-left (click)="removePicture()">\n\n            <ion-icon name="trash"></ion-icon>\n\n            <div>ลบรูป</div>\n\n          </button>\n\n        </ion-col>\n\n      </ion-row>\n\n    </ion-card>\n\n  </ion-item-group>\n\n</ion-content>'/*ion-inline-end:"C:\apps\landslide_app\src\pages\report\report.html"*/,
+            selector: 'page-report',template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\report\report.html"*/'<ion-header class="kanit">\n\n  <ion-navbar color="pk-gold">\n\n    <ion-title>เพิ่มรายงาน</ion-title>\n\n    <ion-buttons end>\n\n      <button ion-button color="primary" icon-left (click)="save()" [disabled]="name.errors && (name.dirty || name.touched)">\n\n        <ion-icon name="create"></ion-icon>\n\n        SAVE\n\n      </button>\n\n    </ion-buttons>\n\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content class="kanit">\n\n  <ion-item-group>\n\n    <ion-item-divider color="light">รายละเอียดสถานที่</ion-item-divider>\n\n    <ion-item>\n\n      <ion-label stacked>สถานที่</ion-label>\n\n      <ion-input type="text" [(ngModel)]="parking.pname" id="name" #name="ngModel" placeholder="ชื่อสถานที่" required></ion-input>\n\n    </ion-item>\n\n    <div padding class="error-border" *ngIf="name.errors && (name.dirty || name.touched)">กรุณากรอกข้อมูลสถานที่</div>\n\n    <ion-item>\n\n      <ion-label stacked>รายละเอียด</ion-label>\n\n      <ion-textarea [(ngModel)]="parking.pdesc" placeholder="เพิ่มรายละเอียดข้อมูลสถานที่ "></ion-textarea>\n\n    </ion-item>\n\n    <p padding>lat: {{parking.lat | number}} lon: {{parking.lon | number}}</p>\n\n  </ion-item-group>\n\n  <ion-item-group>\n\n    <ion-item-divider color="light">รูปสถานที่</ion-item-divider>\n\n    <ion-card>\n\n      <ion-item>\n\n        <ion-avatar item-left>\n\n          <img src="./assets/imgs/no-person.jpg">\n\n        </ion-avatar>\n\n        <h2>Take or Browse Picture</h2>\n\n        <p>รูปภาพสถานที่</p>\n\n      </ion-item>\n\n      <img [src]="parking.photo" *ngIf="parking.photo">\n\n      <img src="./assets/imgs/no-image.jpg" *ngIf="!parking.photo" padding>\n\n      <ion-row>\n\n        <ion-col>\n\n          <button ion-button clear small icon-left (click)="takePicture()">\n\n            <ion-icon name="camera"></ion-icon>\n\n            <div>ถ่ายภาพ</div>\n\n          </button>\n\n        </ion-col>\n\n        <ion-col>\n\n          <button ion-button clear small icon-left (click)="browsePicture()">\n\n            <ion-icon name="folder-open"></ion-icon>\n\n            <div>เลือกรูป</div>\n\n          </button>\n\n        </ion-col>\n\n        <ion-col>\n\n          <button ion-button clear small color="danger" icon-left (click)="removePicture()">\n\n            <ion-icon name="trash"></ion-icon>\n\n            <div>ลบรูป</div>\n\n          </button>\n\n        </ion-col>\n\n      </ion-row>\n\n    </ion-card>\n\n  </ion-item-group>\n\n</ion-content>'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\report\report.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */],
-            __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__["a" /* Camera */],
-            __WEBPACK_IMPORTED_MODULE_3__angular_common_http__["a" /* HttpClient */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */],
-            __WEBPACK_IMPORTED_MODULE_4__providers_report_report__["a" /* ReportProvider */]
-            // private facebook: FacebookServiceProvider
-        ])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__["a" /* Camera */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__["a" /* Camera */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3__providers_report_report__["a" /* ReportProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__providers_report_report__["a" /* ReportProvider */]) === "function" && _f || Object])
     ], ReportPage);
     return ReportPage;
+    var _a, _b, _c, _d, _e, _f;
 }());
 
 //# sourceMappingURL=report.js.map
@@ -513,11 +528,11 @@ webpackEmptyAsyncContext.id = 117;
 
 var map = {
 	"../pages/detail/detail.module": [
-		288,
+		287,
 		3
 	],
 	"../pages/layer/layer.module": [
-		287,
+		288,
 		2
 	],
 	"../pages/list/list.module": [
@@ -574,7 +589,7 @@ var TabsPage = /** @class */ (function () {
         this.tab3Root = __WEBPACK_IMPORTED_MODULE_1__contact_contact__["a" /* ContactPage */];
     }
     TabsPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"C:\apps\landslide_app\src\pages\tabs\tabs.html"*/'<ion-tabs class="kanit">\n\n  <ion-tab [root]="tab1Root" tabTitle="แผนที่ความเสี่ยง" tabIcon="globe"></ion-tab>\n\n  <ion-tab [root]="tab2Root" tabTitle="แจ้งเตือน" tabIcon="notifications"></ion-tab>\n\n  <ion-tab [root]="tab3Root" tabTitle="เกี่ยวกับเรา" tabIcon="contacts"></ion-tab>\n\n</ion-tabs>'/*ion-inline-end:"C:\apps\landslide_app\src\pages\tabs\tabs.html"*/
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\tabs\tabs.html"*/'<ion-tabs class="kanit">\n\n  <ion-tab [root]="tab1Root" tabTitle="แผนที่ความเสี่ยง" tabIcon="globe"></ion-tab>\n\n  <ion-tab [root]="tab2Root" tabTitle="แจ้งเตือน" tabIcon="notifications"></ion-tab>\n\n  <ion-tab [root]="tab3Root" tabTitle="เกี่ยวกับเรา" tabIcon="contacts"></ion-tab>\n\n</ion-tabs>'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\tabs\tabs.html"*/
         }),
         __metadata("design:paramtypes", [])
     ], TabsPage);
@@ -609,7 +624,7 @@ var ContactPage = /** @class */ (function () {
     }
     ContactPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-contact',template:/*ion-inline-start:"C:\apps\landslide_app\src\pages\contact\contact.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>\n\n      Contact\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content>\n\n  <ion-list>\n\n    <ion-list-header>Follow us on Twitter</ion-list-header>\n\n    <ion-item>\n\n      <ion-icon name="ionic" item-start></ion-icon>\n\n      @ionicframework\n\n    </ion-item>\n\n  </ion-list>\n\n</ion-content>\n\n'/*ion-inline-end:"C:\apps\landslide_app\src\pages\contact\contact.html"*/
+            selector: 'page-contact',template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\contact\contact.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>\n\n      Contact\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content>\n\n  <ion-list>\n\n    <ion-list-header>Follow us on Twitter</ion-list-header>\n\n    <ion-item>\n\n      <ion-icon name="ionic" item-start></ion-icon>\n\n      @ionicframework\n\n    </ion-item>\n\n  </ion-list>\n\n</ion-content>\n\n'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\contact\contact.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]])
     ], ContactPage);
@@ -634,7 +649,7 @@ var ContactPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_geolocation__ = __webpack_require__(208);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__report_report__ = __webpack_require__(105);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_report_report__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__layer_layer__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__layer_layer__ = __webpack_require__(103);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -889,7 +904,7 @@ var HomePage = /** @class */ (function () {
     };
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"C:\apps\landslide_app\src\pages\home\home.html"*/'<!--<ion-header class="kanit">\n\n  <ion-navbar transparent>\n\n    <ion-title> </ion-title>\n\n  </ion-navbar>\n\n</ion-header>-->\n\n\n\n<ion-content class="kanit">\n\n  <div id="map" class="map">\n\n    <div>\n\n\n\n      <button ion-fab color="light" id="feb" (click)="showLocation()" style="bottom: 50%">\n\n        <ion-icon name="locate"></ion-icon>\n\n      </button>\n\n\n\n      <button ion-fab color="light" id="feb" (click)="selectLayers()" style="bottom: 40%">\n\n        <ion-icon name="logo-buffer"></ion-icon>\n\n      </button>\n\n\n\n      <button ion-fab color="light" id="feb" (click)="gotoReport()" style="bottom: 30%">\n\n        <ion-icon name="create"></ion-icon>\n\n      </button>\n\n\n\n    </div>\n\n  </div>\n\n\n\n</ion-content>'/*ion-inline-end:"C:\apps\landslide_app\src\pages\home\home.html"*/
+            selector: 'page-home',template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\home\home.html"*/'<!--<ion-header class="kanit">\n\n  <ion-navbar transparent>\n\n    <ion-title> </ion-title>\n\n  </ion-navbar>\n\n</ion-header>-->\n\n\n\n<ion-content class="kanit">\n\n  <div id="map" class="map">\n\n    <div>\n\n\n\n      <button ion-fab color="light" id="feb" (click)="showLocation()" style="bottom: 50%">\n\n        <ion-icon name="locate"></ion-icon>\n\n      </button>\n\n\n\n      <button ion-fab color="light" id="feb" (click)="selectLayers()" style="bottom: 40%">\n\n        <ion-icon name="logo-buffer"></ion-icon>\n\n      </button>\n\n\n\n      <button ion-fab color="light" id="feb" (click)="gotoReport()" style="bottom: 30%">\n\n        <ion-icon name="create"></ion-icon>\n\n      </button>\n\n\n\n    </div>\n\n  </div>\n\n\n\n</ion-content>'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\home\home.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_4__ionic_native_geolocation__["a" /* Geolocation */],
@@ -935,13 +950,13 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_status_bar__ = __webpack_require__(203);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_splash_screen__ = __webpack_require__(204);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__providers_report_report__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_detail_detail__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_detail_detail__ = __webpack_require__(102);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_list_list__ = __webpack_require__(104);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_report_report__ = __webpack_require__(105);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__angular_common_http__ = __webpack_require__(79);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__ionic_native_geolocation__ = __webpack_require__(208);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__ionic_native_camera__ = __webpack_require__(162);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_layer_layer__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_layer_layer__ = __webpack_require__(103);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -987,8 +1002,8 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_14__angular_common_http__["b" /* HttpClientModule */],
                 __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* MyApp */], {}, {
                     links: [
-                        { loadChildren: '../pages/layer/layer.module#LayerPageModule', name: 'LayerPage', segment: 'layer', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/detail/detail.module#DetailPageModule', name: 'DetailPage', segment: 'detail', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/layer/layer.module#LayerPageModule', name: 'LayerPage', segment: 'layer', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/list/list.module#ListPageModule', name: 'ListPage', segment: 'list', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/report/report.module#ReportPageModule', name: 'ReportPage', segment: 'report', priority: 'low', defaultHistory: [] }
                     ]
@@ -1058,7 +1073,7 @@ var MyApp = /** @class */ (function () {
         });
     }
     MyApp = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"C:\apps\landslide_app\src\app\app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n\n'/*ion-inline-end:"C:\apps\landslide_app\src\app\app.html"*/
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\app\app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n\n'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\app\app.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
     ], MyApp);
@@ -1093,7 +1108,7 @@ var AboutPage = /** @class */ (function () {
     }
     AboutPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-about',template:/*ion-inline-start:"C:\apps\landslide_app\src\pages\about\about.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>\n\n      About\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n\n\n</ion-content>\n\n'/*ion-inline-end:"C:\apps\landslide_app\src\pages\about\about.html"*/
+            selector: 'page-about',template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\about\about.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>\n\n      About\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n\n\n</ion-content>\n\n'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\about\about.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]])
     ], AboutPage);
@@ -1101,6 +1116,275 @@ var AboutPage = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=about.js.map
+
+/***/ }),
+
+/***/ 416:
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./af": 292,
+	"./af.js": 292,
+	"./ar": 293,
+	"./ar-dz": 294,
+	"./ar-dz.js": 294,
+	"./ar-kw": 295,
+	"./ar-kw.js": 295,
+	"./ar-ly": 296,
+	"./ar-ly.js": 296,
+	"./ar-ma": 297,
+	"./ar-ma.js": 297,
+	"./ar-sa": 298,
+	"./ar-sa.js": 298,
+	"./ar-tn": 299,
+	"./ar-tn.js": 299,
+	"./ar.js": 293,
+	"./az": 300,
+	"./az.js": 300,
+	"./be": 301,
+	"./be.js": 301,
+	"./bg": 302,
+	"./bg.js": 302,
+	"./bm": 303,
+	"./bm.js": 303,
+	"./bn": 304,
+	"./bn.js": 304,
+	"./bo": 305,
+	"./bo.js": 305,
+	"./br": 306,
+	"./br.js": 306,
+	"./bs": 307,
+	"./bs.js": 307,
+	"./ca": 308,
+	"./ca.js": 308,
+	"./cs": 309,
+	"./cs.js": 309,
+	"./cv": 310,
+	"./cv.js": 310,
+	"./cy": 311,
+	"./cy.js": 311,
+	"./da": 312,
+	"./da.js": 312,
+	"./de": 313,
+	"./de-at": 314,
+	"./de-at.js": 314,
+	"./de-ch": 315,
+	"./de-ch.js": 315,
+	"./de.js": 313,
+	"./dv": 316,
+	"./dv.js": 316,
+	"./el": 317,
+	"./el.js": 317,
+	"./en-au": 318,
+	"./en-au.js": 318,
+	"./en-ca": 319,
+	"./en-ca.js": 319,
+	"./en-gb": 320,
+	"./en-gb.js": 320,
+	"./en-ie": 321,
+	"./en-ie.js": 321,
+	"./en-il": 322,
+	"./en-il.js": 322,
+	"./en-nz": 323,
+	"./en-nz.js": 323,
+	"./eo": 324,
+	"./eo.js": 324,
+	"./es": 325,
+	"./es-do": 326,
+	"./es-do.js": 326,
+	"./es-us": 327,
+	"./es-us.js": 327,
+	"./es.js": 325,
+	"./et": 328,
+	"./et.js": 328,
+	"./eu": 329,
+	"./eu.js": 329,
+	"./fa": 330,
+	"./fa.js": 330,
+	"./fi": 331,
+	"./fi.js": 331,
+	"./fo": 332,
+	"./fo.js": 332,
+	"./fr": 333,
+	"./fr-ca": 334,
+	"./fr-ca.js": 334,
+	"./fr-ch": 335,
+	"./fr-ch.js": 335,
+	"./fr.js": 333,
+	"./fy": 336,
+	"./fy.js": 336,
+	"./gd": 337,
+	"./gd.js": 337,
+	"./gl": 338,
+	"./gl.js": 338,
+	"./gom-latn": 339,
+	"./gom-latn.js": 339,
+	"./gu": 340,
+	"./gu.js": 340,
+	"./he": 341,
+	"./he.js": 341,
+	"./hi": 342,
+	"./hi.js": 342,
+	"./hr": 343,
+	"./hr.js": 343,
+	"./hu": 344,
+	"./hu.js": 344,
+	"./hy-am": 345,
+	"./hy-am.js": 345,
+	"./id": 346,
+	"./id.js": 346,
+	"./is": 347,
+	"./is.js": 347,
+	"./it": 348,
+	"./it.js": 348,
+	"./ja": 349,
+	"./ja.js": 349,
+	"./jv": 350,
+	"./jv.js": 350,
+	"./ka": 351,
+	"./ka.js": 351,
+	"./kk": 352,
+	"./kk.js": 352,
+	"./km": 353,
+	"./km.js": 353,
+	"./kn": 354,
+	"./kn.js": 354,
+	"./ko": 355,
+	"./ko.js": 355,
+	"./ky": 356,
+	"./ky.js": 356,
+	"./lb": 357,
+	"./lb.js": 357,
+	"./lo": 358,
+	"./lo.js": 358,
+	"./lt": 359,
+	"./lt.js": 359,
+	"./lv": 360,
+	"./lv.js": 360,
+	"./me": 361,
+	"./me.js": 361,
+	"./mi": 362,
+	"./mi.js": 362,
+	"./mk": 363,
+	"./mk.js": 363,
+	"./ml": 364,
+	"./ml.js": 364,
+	"./mn": 365,
+	"./mn.js": 365,
+	"./mr": 366,
+	"./mr.js": 366,
+	"./ms": 367,
+	"./ms-my": 368,
+	"./ms-my.js": 368,
+	"./ms.js": 367,
+	"./mt": 369,
+	"./mt.js": 369,
+	"./my": 370,
+	"./my.js": 370,
+	"./nb": 371,
+	"./nb.js": 371,
+	"./ne": 372,
+	"./ne.js": 372,
+	"./nl": 373,
+	"./nl-be": 374,
+	"./nl-be.js": 374,
+	"./nl.js": 373,
+	"./nn": 375,
+	"./nn.js": 375,
+	"./pa-in": 376,
+	"./pa-in.js": 376,
+	"./pl": 377,
+	"./pl.js": 377,
+	"./pt": 378,
+	"./pt-br": 379,
+	"./pt-br.js": 379,
+	"./pt.js": 378,
+	"./ro": 380,
+	"./ro.js": 380,
+	"./ru": 381,
+	"./ru.js": 381,
+	"./sd": 382,
+	"./sd.js": 382,
+	"./se": 383,
+	"./se.js": 383,
+	"./si": 384,
+	"./si.js": 384,
+	"./sk": 385,
+	"./sk.js": 385,
+	"./sl": 386,
+	"./sl.js": 386,
+	"./sq": 387,
+	"./sq.js": 387,
+	"./sr": 388,
+	"./sr-cyrl": 389,
+	"./sr-cyrl.js": 389,
+	"./sr.js": 388,
+	"./ss": 390,
+	"./ss.js": 390,
+	"./sv": 391,
+	"./sv.js": 391,
+	"./sw": 392,
+	"./sw.js": 392,
+	"./ta": 393,
+	"./ta.js": 393,
+	"./te": 394,
+	"./te.js": 394,
+	"./tet": 395,
+	"./tet.js": 395,
+	"./tg": 396,
+	"./tg.js": 396,
+	"./th": 397,
+	"./th.js": 397,
+	"./tl-ph": 398,
+	"./tl-ph.js": 398,
+	"./tlh": 399,
+	"./tlh.js": 399,
+	"./tr": 400,
+	"./tr.js": 400,
+	"./tzl": 401,
+	"./tzl.js": 401,
+	"./tzm": 402,
+	"./tzm-latn": 403,
+	"./tzm-latn.js": 403,
+	"./tzm.js": 402,
+	"./ug-cn": 404,
+	"./ug-cn.js": 404,
+	"./uk": 405,
+	"./uk.js": 405,
+	"./ur": 406,
+	"./ur.js": 406,
+	"./uz": 407,
+	"./uz-latn": 408,
+	"./uz-latn.js": 408,
+	"./uz.js": 407,
+	"./vi": 409,
+	"./vi.js": 409,
+	"./x-pseudo": 410,
+	"./x-pseudo.js": 410,
+	"./yo": 411,
+	"./yo.js": 411,
+	"./zh-cn": 412,
+	"./zh-cn.js": 412,
+	"./zh-hk": 413,
+	"./zh-hk.js": 413,
+	"./zh-tw": 414,
+	"./zh-tw.js": 414
+};
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number or string
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 416;
 
 /***/ }),
 
@@ -1126,7 +1410,19 @@ var ReportProvider = /** @class */ (function () {
     function ReportProvider(http) {
         this.http = http;
         this.url = 'http://cgi.uru.ac.th/service';
+        this.www3 = 'http://www3.cgistln.nu.ac.th/geoserver/lsnanbasin/ows?';
     }
+    ReportProvider.prototype.getRain = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            _this.http.get(_this.www3 + 'service=WFS&version=1.0.0&request=GetFeature&typeName=lsnanbasin:vhex_service&CQL_FILTER=INTERSECTS(geom,POINT(' +
+                '100.95304%2019.01781))&outputFormat=application%2Fjson').subscribe(function (res) {
+                resolve(res);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
     ReportProvider.prototype.getReportList = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
@@ -1158,9 +1454,10 @@ var ReportProvider = /** @class */ (function () {
     };
     ReportProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]) === "function" && _a || Object])
     ], ReportProvider);
     return ReportProvider;
+    var _a;
 }());
 
 //# sourceMappingURL=report.js.map
