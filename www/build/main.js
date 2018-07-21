@@ -303,15 +303,17 @@ var ListPage = /** @class */ (function () {
         this.ref = ref;
         this.loadingCtrl = loadingCtrl;
         this.reportProvider = reportProvider;
+        this.pos = this.reportProvider.getLocation();
     }
     ListPage.prototype.ionViewDidLoad = function () {
         // this.loadReport();
         // this.content.enableScrollListener();
-        this.loadRain();
+        this.loadRain(this.pos.lat, this.pos.lon);
     };
-    ListPage.prototype.loadRain = function () {
+    ListPage.prototype.loadRain = function (lat, lon) {
         var _this = this;
-        this.reportProvider.getRain().then(function (res) {
+        // console.log(this.pos.lat, this.pos.lon)
+        this.reportProvider.getRain(lat, lon).then(function (res) {
             var wk = 'wk' + __WEBPACK_IMPORTED_MODULE_4_moment__().weeks();
             // console.log(res.features[0].properties)
             _this.reports = res.features[0].properties;
@@ -680,6 +682,7 @@ var HomePage = /** @class */ (function () {
     }
     HomePage.prototype.ionViewDidLoad = function () {
         this.loadMap();
+        this.showLocation();
     };
     HomePage.prototype.loadMap = function () {
         this.map = __WEBPACK_IMPORTED_MODULE_2_leaflet__["map"]('map', {
@@ -688,21 +691,21 @@ var HomePage = /** @class */ (function () {
             zoomControl: false,
             attributionControl: false,
         });
-        this.roads = __WEBPACK_IMPORTED_MODULE_2_leaflet__["gridLayer"].googleMutant({
-            type: 'roadmap',
-            zIndex: 0
+        this.roads = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"]('http://{s}.google.com/vt/lyrs=r&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
         });
-        this.satellite = __WEBPACK_IMPORTED_MODULE_2_leaflet__["gridLayer"].googleMutant({
-            type: 'satellite',
-            zIndex: 0
+        this.satellite = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"]('http://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
         });
-        this.hybrid = __WEBPACK_IMPORTED_MODULE_2_leaflet__["gridLayer"].googleMutant({
-            type: 'hybrid',
-            zIndex: 0
+        this.hybrid = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"]('http://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
         });
-        this.terrain = __WEBPACK_IMPORTED_MODULE_2_leaflet__["gridLayer"].googleMutant({
-            type: 'terrain',
-            zIndex: 0
+        this.terrain = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"]('http://{s}.google.com/vt/lyrs=t,m&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
         });
         // overlay
         // Radar From TMD&NECTEC
@@ -785,32 +788,6 @@ var HomePage = /** @class */ (function () {
             CQL_FILTER: 'prov_code=53',
             zIndex: 5
         });
-        // const ud_disaster_commun = L.tileLayer.wms("http://cgi.uru.ac.th/gs-rain/ows?", {
-        //   layers: 'rain:disaster_community_4326',
-        //   format: 'image/png',
-        //   transparent: true
-        // });
-        /*  this.longlin_parcel_centroid = L.tileLayer.wms("http://cgi.uru.ac.th/gs-durian/ows?", {
-            layers: 'longlin:longlin_parcel_centroid',
-            format: 'image/png',
-            transparent: true,
-            styles: 'tree_green',
-            zIndex: 5
-          });
-      
-          this.ud_rain = L.tileLayer.wms("http://cgi.uru.ac.th/gs-rain/ows?", {
-            layers: 'rain:rain_now_report_ud_tb',
-            format: 'image/png',
-            transparent: true,
-            zIndex: 5
-          });
-      
-          this.ud_hp = L.tileLayer.wms("http://cgi.uru.ac.th/gs-hotspot/ows?", {
-            layers: 'hp:hotspot_ud_today',
-            format: 'image/png',
-            transparent: true,
-            zIndex: 5
-          }); */
         this.lyrGroup = {
             lyr: [
                 { name: 'ขอบเขตอำเภอ', lyr: 'ud_amp', wms: this.ud_amp.addTo(this.map), type: 'overlay', 'isChecked': true },
@@ -827,9 +804,6 @@ var HomePage = /** @class */ (function () {
                 { name: 'ฝนรายชั่วโมง(มิลลิเมตร)', lyr: 'tmdrainfall', wms: this.tmdrainfall.addTo(this.map), type: 'overlay', 'isChecked': true },
                 { name: 'ฝนสะสมย้อนหลัง 7 วัน(มิลลิเมตร)', lyr: 'rainfall7day', wms: this.rainfall7day, type: 'overlay', 'isChecked': false },
                 { name: 'หมู่บ้าน', lyr: 'ud_vill', wms: this.ud_vill, type: 'overlay', 'isChecked': false },
-                //{ name: 'แปลงปลูกทุเรียน', lyr: 'longlin_parcel_centroid', wms: this.longlin_parcel_centroid, type: 'overlay', 'isChecked': false },
-                //{ name: 'สถานีที่มีฝนตก', lyr: 'ud_rain', wms: this.ud_rain.addTo(this.map), type: 'overlay', 'isChecked': false },
-                //{ name: 'จุดเกิดไฟ', lyr: 'ud_hp', wms: this.ud_hp.addTo(this.map), type: 'overlay', 'isChecked': true },
                 { name: 'แผนที่ถนน', lyr: 'roads', wms: this.roads, type: 'base', 'isChecked': false },
                 { name: 'แผนที่ภาพดาวเทียม', lyr: 'satellite', wms: this.satellite, type: 'base', 'isChecked': false },
                 { name: 'แผนที่ผสม', lyr: 'hybrid', wms: this.hybrid, type: 'base', 'isChecked': false },
@@ -868,12 +842,12 @@ var HomePage = /** @class */ (function () {
     };
     HomePage.prototype.gotoReport = function () {
         if (this.lat === 0 || this.lon === 0) {
-            var alert_1 = this.alertCtrl.create({
+            var alert = this.alertCtrl.create({
                 title: 'ระบุตำแหน่งของท่าน',
                 subTitle: 'ไม่พบตำแหน่งของท่าน โปรดกลับไประบุตำแหน่งของท่านก่อนรายงานสถานการณ์',
                 buttons: ['ตกลง']
             });
-            alert_1.present();
+            alert.present();
         }
         else {
             this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_5__report_report__["a" /* ReportPage */], {
@@ -906,14 +880,10 @@ var HomePage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-home',template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\home\home.html"*/'<!--<ion-header class="kanit">\n\n  <ion-navbar transparent>\n\n    <ion-title> </ion-title>\n\n  </ion-navbar>\n\n</ion-header>-->\n\n\n\n<ion-content class="kanit">\n\n  <div id="map" class="map">\n\n    <div>\n\n\n\n      <button ion-fab color="light" id="feb" (click)="showLocation()" style="bottom: 50%">\n\n        <ion-icon name="locate"></ion-icon>\n\n      </button>\n\n\n\n      <button ion-fab color="light" id="feb" (click)="selectLayers()" style="bottom: 40%">\n\n        <ion-icon name="logo-buffer"></ion-icon>\n\n      </button>\n\n\n\n      <button ion-fab color="light" id="feb" (click)="gotoReport()" style="bottom: 30%">\n\n        <ion-icon name="create"></ion-icon>\n\n      </button>\n\n\n\n    </div>\n\n  </div>\n\n\n\n</ion-content>'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\home\home.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_4__ionic_native_geolocation__["a" /* Geolocation */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* ModalController */],
-            __WEBPACK_IMPORTED_MODULE_6__providers_report_report__["a" /* ReportProvider */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__ionic_native_geolocation__["a" /* Geolocation */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__ionic_native_geolocation__["a" /* Geolocation */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* ModalController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* ModalController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_6__providers_report_report__["a" /* ReportProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__providers_report_report__["a" /* ReportProvider */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _f || Object])
     ], HomePage);
     return HomePage;
+    var _a, _b, _c, _d, _e, _f;
 }());
 
 //# sourceMappingURL=home.js.map
@@ -1412,11 +1382,11 @@ var ReportProvider = /** @class */ (function () {
         this.url = 'http://cgi.uru.ac.th/service';
         this.www3 = 'http://www3.cgistln.nu.ac.th/geoserver/lsnanbasin/ows?';
     }
-    ReportProvider.prototype.getRain = function () {
+    ReportProvider.prototype.getRain = function (lat, lon) {
         var _this = this;
         return new Promise(function (resolve, reject) {
             _this.http.get(_this.www3 + 'service=WFS&version=1.0.0&request=GetFeature&typeName=lsnanbasin:vhex_service&CQL_FILTER=INTERSECTS(geom,POINT(' +
-                '100.95304%2019.01781))&outputFormat=application%2Fjson').subscribe(function (res) {
+                lon + '%20' + lat + '))&outputFormat=application%2Fjson').subscribe(function (res) {
                 resolve(res);
             }, function (error) {
                 reject(error);

@@ -15,10 +15,10 @@ export class ReportProvider {
   ) {
   }
 
-  getRain() {
+  getRain(lat, lon) {
     return new Promise((resolve, reject) => {
       this.http.get(this.www3 + 'service=WFS&version=1.0.0&request=GetFeature&typeName=lsnanbasin:vhex_service&CQL_FILTER=INTERSECTS(geom,POINT(' +
-        '100.95304%2019.01781))&outputFormat=application%2Fjson').subscribe((res: any) => {
+        lon + '%20' + lat + '))&outputFormat=application%2Fjson').subscribe((res: any) => {
           resolve(res)
         }, (error) => {
           reject(error)

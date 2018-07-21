@@ -16,6 +16,8 @@ export class ListPage {
   public rain2018: any;
   public rainAVWeek: any;
 
+  public pos: any;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -23,18 +25,19 @@ export class ListPage {
     private loadingCtrl: LoadingController,
     private reportProvider: ReportProvider
   ) {
+    this.pos = this.reportProvider.getLocation()
   }
 
 
   ionViewDidLoad() {
     // this.loadReport();
     // this.content.enableScrollListener();
-    this.loadRain()
+    this.loadRain(this.pos.lat, this.pos.lon)
   }
 
-  loadRain() {
-
-    this.reportProvider.getRain().then((res: any) => {
+  loadRain(lat: number, lon: number) {
+    // console.log(this.pos.lat, this.pos.lon)
+    this.reportProvider.getRain(lat, lon).then((res: any) => {
       let wk = 'wk' + moment().weeks()
       // console.log(res.features[0].properties)
       this.reports = res.features[0].properties;
