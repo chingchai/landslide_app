@@ -11,10 +11,12 @@ import * as moment from 'moment';
 })
 export class ListPage {
   public reports: any;
-  public rainnow: any;
-  public rain7day: any;
-  public rain2018: any;
+  public rainnow: number;
+  public rain7day: number;
+  public rain2018: number;
   public rainAVWeek: any;
+  public ls_risk: number;
+  public warning: any;
 
   public pos: any;
 
@@ -45,8 +47,22 @@ export class ListPage {
       this.rain7day = this.reports.rain7day;
       this.rain2018 = this.reports.rain2018;
 
+      this.ls_risk = this.reports.ls_risk;
+
+
       this.rainAVWeek = this.reports[wk];
-      console.log(this.rainAVWeek)
+
+      if (this.rainnow > 100 && this.ls_risk == 3) {
+        this.warning = 'อพยพ'
+      } else if (this.rainnow > 100 && this.ls_risk <= 2) {
+        this.warning = 'เตือนภัย'
+      } else if (this.rainnow <= 100 && this.ls_risk == 3) {
+        this.warning = 'เฝ้าระวัง'
+      } else {
+        this.warning = 'เฝ้าระวัง'
+      }
+
+
     }, error => {
       console.log(error)
     })
