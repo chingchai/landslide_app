@@ -59,6 +59,7 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.loadMap();
+    this.showLocation()
   }
 
   loadMap() {
@@ -69,24 +70,24 @@ export class HomePage {
       attributionControl: false,
     })
 
-    this.roads = L.gridLayer.googleMutant({
-      type: 'roadmap', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
-      zIndex: 0
+    this.roads = L.tileLayer('http://{s}.google.com/vt/lyrs=r&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     });
 
-    this.satellite = L.gridLayer.googleMutant({
-      type: 'satellite', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
-      zIndex: 0
+    this.satellite = L.tileLayer('http://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     });
 
-    this.hybrid = L.gridLayer.googleMutant({
-      type: 'hybrid', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
-      zIndex: 0
+    this.hybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     });
 
-    this.terrain = L.gridLayer.googleMutant({
-      type: 'terrain', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
-      zIndex: 0
+    this.terrain = L.tileLayer('http://{s}.google.com/vt/lyrs=t,m&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     });
 
     // overlay
@@ -182,34 +183,6 @@ export class HomePage {
       zIndex: 5
     });
 
-    // const ud_disaster_commun = L.tileLayer.wms("http://cgi.uru.ac.th/gs-rain/ows?", {
-    //   layers: 'rain:disaster_community_4326',
-    //   format: 'image/png',
-    //   transparent: true
-    // });
-
-    /*  this.longlin_parcel_centroid = L.tileLayer.wms("http://cgi.uru.ac.th/gs-durian/ows?", {
-        layers: 'longlin:longlin_parcel_centroid',
-        format: 'image/png',
-        transparent: true,
-        styles: 'tree_green',
-        zIndex: 5
-      });
-  
-      this.ud_rain = L.tileLayer.wms("http://cgi.uru.ac.th/gs-rain/ows?", {
-        layers: 'rain:rain_now_report_ud_tb',
-        format: 'image/png',
-        transparent: true,
-        zIndex: 5
-      });
-  
-      this.ud_hp = L.tileLayer.wms("http://cgi.uru.ac.th/gs-hotspot/ows?", {
-        layers: 'hp:hotspot_ud_today',
-        format: 'image/png',
-        transparent: true,
-        zIndex: 5
-      }); */
-
     this.lyrGroup = {
       lyr: [
         { name: 'ขอบเขตอำเภอ', lyr: 'ud_amp', wms: this.ud_amp.addTo(this.map), type: 'overlay', 'isChecked': true },
@@ -228,9 +201,6 @@ export class HomePage {
         { name: 'ฝนรายชั่วโมง(มิลลิเมตร)', lyr: 'tmdrainfall', wms: this.tmdrainfall.addTo(this.map), type: 'overlay', 'isChecked': true },
         { name: 'ฝนสะสมย้อนหลัง 7 วัน(มิลลิเมตร)', lyr: 'rainfall7day', wms: this.rainfall7day, type: 'overlay', 'isChecked': false },
         { name: 'หมู่บ้าน', lyr: 'ud_vill', wms: this.ud_vill, type: 'overlay', 'isChecked': false },
-        //{ name: 'แปลงปลูกทุเรียน', lyr: 'longlin_parcel_centroid', wms: this.longlin_parcel_centroid, type: 'overlay', 'isChecked': false },
-        //{ name: 'สถานีที่มีฝนตก', lyr: 'ud_rain', wms: this.ud_rain.addTo(this.map), type: 'overlay', 'isChecked': false },
-        //{ name: 'จุดเกิดไฟ', lyr: 'ud_hp', wms: this.ud_hp.addTo(this.map), type: 'overlay', 'isChecked': true },
         { name: 'แผนที่ถนน', lyr: 'roads', wms: this.roads, type: 'base', 'isChecked': false },
         { name: 'แผนที่ภาพดาวเทียม', lyr: 'satellite', wms: this.satellite, type: 'base', 'isChecked': false },
         { name: 'แผนที่ผสม', lyr: 'hybrid', wms: this.hybrid, type: 'base', 'isChecked': false },
@@ -262,6 +232,7 @@ export class HomePage {
       this.marker.on("dragend", function (e) {
         this.pos = [e.target._latlng.lat, e.target._latlng.lng];
       });
+
     }).catch((error) => {
       console.log('Error getting location', error);
     });

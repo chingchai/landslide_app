@@ -15,10 +15,21 @@ export class ReportProvider {
   ) {
   }
 
-  getRain() {
+  getRain(lat, lon) {
     return new Promise((resolve, reject) => {
       this.http.get(this.www3 + 'service=WFS&version=1.0.0&request=GetFeature&typeName=lsnanbasin:vhex_service&CQL_FILTER=INTERSECTS(geom,POINT(' +
-        '100.95304%2019.01781))&outputFormat=application%2Fjson').subscribe((res: any) => {
+        lon + '%20' + lat + '))&outputFormat=application%2Fjson').subscribe((res: any) => {
+          resolve(res)
+        }, (error) => {
+          reject(error)
+        })
+    })
+  }
+
+  getVill10Km(lon: number, lat: number, r: number) {
+    return new Promise((resolve, reject) => {
+      this.http.get(this.www3 + 'service=WFS&version=1.0.0&request=GetFeature&typeName=lsnanbasin%3Avillage_detect_final&CQL_FILTER=DWITHIN(geom,POINT(' +
+        lon + ' ' + lat + '),' + r + ',meters)&outputFormat=application%2Fjson').subscribe((res: any) => {
           resolve(res)
         }, (error) => {
           reject(error)

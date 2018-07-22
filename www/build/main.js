@@ -6,11 +6,12 @@ webpackJsonp([4],{
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DetailPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_leaflet__ = __webpack_require__(160);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_leaflet___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_leaflet__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet_gridlayer_googlemutant__ = __webpack_require__(161);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet_gridlayer_googlemutant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_leaflet_gridlayer_googlemutant__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_report_report__ = __webpack_require__(42);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -24,14 +25,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var DetailPage = /** @class */ (function () {
-    function DetailPage(navCtrl, navParams) {
+    function DetailPage(navCtrl, navParams, reportProvider) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
+        this.reportProvider = reportProvider;
         this.dat = this.navParams.get('data');
     }
     DetailPage.prototype.ionViewDidLoad = function () {
-        console.log(this.dat);
+        // console.log(this.dat);
         this.loadMap();
     };
     DetailPage.prototype.loadMap = function () {
@@ -41,94 +44,38 @@ var DetailPage = /** @class */ (function () {
             zoomControl: false,
             attributionControl: false,
         });
-        this.roads = __WEBPACK_IMPORTED_MODULE_2_leaflet__["gridLayer"].googleMutant({
-            type: 'roadmap',
-            zIndex: 0
+        // base map
+        this.roads = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"]('http://{s}.google.com/vt/lyrs=r&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
         });
-        this.satellite = __WEBPACK_IMPORTED_MODULE_2_leaflet__["gridLayer"].googleMutant({
-            type: 'satellite',
-            zIndex: 0
+        this.satellite = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"]('http://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
         });
-        this.hybrid = __WEBPACK_IMPORTED_MODULE_2_leaflet__["gridLayer"].googleMutant({
-            type: 'hybrid',
-            zIndex: 0
+        this.hybrid = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"]('http://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
         });
-        this.terrain = __WEBPACK_IMPORTED_MODULE_2_leaflet__["gridLayer"].googleMutant({
-            type: 'terrain',
-            zIndex: 0
+        this.terrain = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"]('http://{s}.google.com/vt/lyrs=t,m&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
         });
         // overlay
-        var imageUrl = 'http://rain.tvis.in.th/output/';
-        this.radar_cri = __WEBPACK_IMPORTED_MODULE_2_leaflet__["imageOverlay"](imageUrl + 'CRI.png', [[22.305437, 102.143387], [17.596297, 97.611690]]);
-        this.radar_kkn = __WEBPACK_IMPORTED_MODULE_2_leaflet__["imageOverlay"](imageUrl + 'KKN.png', [[18.793550, 105.026265], [14.116192, 100.541459]]);
-        this.radar_phs = __WEBPACK_IMPORTED_MODULE_2_leaflet__["imageOverlay"](imageUrl + 'PHS.png', [[19.094393, 102.475537], [14.411350, 97.983591]]);
-        this.ud_prov = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"].wms("http://map.nu.ac.th/gs-alr2/ows?", {
-            layers: 'alr:ln9p_prov',
+        var r = 30000;
+        this.ud_vill = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"].wms("http://www3.cgistln.nu.ac.th/geoserver/ows?", {
+            layers: 'lsnanbasin:village_detect_final',
             format: 'image/png',
             transparent: true,
-            CQL_FILTER: 'prov_code=53',
+            CQL_FILTER: 'DWITHIN(geom,Point(' + this.dat[1] + ' ' + this.dat[0] + '),' + r + ',meters)',
             zIndex: 5
         });
-        this.ud_amp = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"].wms("http://map.nu.ac.th/gs-alr2/ows?", {
-            layers: 'alr:ln9p_amp',
-            format: 'image/png',
-            transparent: true,
-            CQL_FILTER: 'prov_code=53',
-            zIndex: 4
-        });
-        this.ud_tam = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"].wms("http://map.nu.ac.th/gs-alr2/ows?", {
-            layers: 'alr:ln9p_tam',
-            format: 'image/png',
-            transparent: true,
-            CQL_FILTER: 'prov_code=53',
-            zIndex: 3
-        });
-        this.ud_vill = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"].wms("http://map.nu.ac.th/gs-alr2/ows?", {
-            layers: 'alr:ln9p_vill',
-            format: 'image/png',
-            transparent: true,
-            CQL_FILTER: 'prov_code=53',
-            zIndex: 5
-        });
-        // const ud_disaster_commun = L.tileLayer.wms("http://cgi.uru.ac.th/gs-rain/ows?", {
-        //   layers: 'rain:disaster_community_4326',
-        //   format: 'image/png',
-        //   transparent: true
-        // });
-        this.longlin_parcel_centroid = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"].wms("http://cgi.uru.ac.th/gs-durian/ows?", {
-            layers: 'longlin:longlin_parcel_centroid',
-            format: 'image/png',
-            transparent: true,
-            styles: 'tree_green',
-            zIndex: 5
-        });
-        this.ud_rain = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"].wms("http://cgi.uru.ac.th/gs-rain/ows?", {
-            layers: 'rain:rain_now_report_ud_tb',
-            format: 'image/png',
-            transparent: true,
-            zIndex: 5
-        });
-        this.ud_hp = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"].wms("http://cgi.uru.ac.th/gs-hotspot/ows?", {
-            layers: 'hp:hotspot_ud_today',
-            format: 'image/png',
-            transparent: true,
-            zIndex: 5
-        });
-        this.pos = [this.dat.lat, this.dat.lon];
+        this.pos = [this.dat[0], this.dat[1]];
         this.map.setView(this.pos, 16);
         this.marker = __WEBPACK_IMPORTED_MODULE_2_leaflet__["marker"](this.pos, { draggable: false }).addTo(this.map);
         this.lyrGroup = {
             lyr: [
-                { name: 'ขอบเขตอำเภอ', lyr: 'ud_amp', wms: this.ud_amp.addTo(this.map), type: 'overlay', 'isChecked': true },
-                { name: 'ขอบเขตตำบล', lyr: 'ud_tam', wms: this.ud_tam.addTo(this.map), type: 'overlay', 'isChecked': true },
-                { name: 'ขอบเขตจังหวัด', lyr: 'ud_prov', wms: this.ud_prov.addTo(this.map), type: 'overlay', 'isChecked': true },
-                { name: 'ข้อมูลฝนจาก Radar: พิษณุโลก', lyr: 'radar_phs', wms: this.radar_phs, type: 'overlay', 'isChecked': false },
-                { name: 'ข้อมูลฝนจาก Radar: เชียงราย', lyr: 'radar_cri', wms: this.radar_cri, type: 'overlay', 'isChecked': false },
-                { name: 'ข้อมูลฝนจาก Radar: ขอนแก่น', lyr: 'radar_kkn', wms: this.radar_kkn, type: 'overlay', 'isChecked': false },
-                { name: 'หมู่บ้าน', lyr: 'ud_vill', wms: this.ud_vill, type: 'overlay', 'isChecked': false },
-                { name: 'แปลงปลูกทุเรียน', lyr: 'longlin_parcel_centroid', wms: this.longlin_parcel_centroid, type: 'overlay', 'isChecked': false },
-                { name: 'สถานีที่มีฝนตก', lyr: 'ud_rain', wms: this.ud_rain.addTo(this.map), type: 'overlay', 'isChecked': true },
-                { name: 'จุดเกิดไฟ', lyr: 'ud_hp', wms: this.ud_hp.addTo(this.map), type: 'overlay', 'isChecked': true },
+                { name: 'หมู่บ้าน', lyr: 'ud_vill', wms: this.ud_vill.addTo(this.map), type: 'overlay', 'isChecked': false },
                 { name: 'แผนที่ถนน', lyr: 'roads', wms: this.roads, type: 'base', 'isChecked': false },
                 { name: 'แผนที่ภาพดาวเทียม', lyr: 'satellite', wms: this.satellite, type: 'base', 'isChecked': false },
                 { name: 'แผนที่ผสม', lyr: 'hybrid', wms: this.hybrid, type: 'base', 'isChecked': false },
@@ -136,13 +83,22 @@ var DetailPage = /** @class */ (function () {
             ]
         };
         // L.control.layers(baseLayers, overlay, { position: 'topright' }).addTo(this.map);
+        this.loadVill(this.dat[1], this.dat[0], r);
+    };
+    DetailPage.prototype.loadVill = function (lon, lat, r) {
+        var _this = this;
+        this.reportProvider.getVill10Km(lon, lat, r).then(function (res) {
+            _this.vill10Km = res.features;
+            console.log(_this.vill10Km);
+        });
     };
     DetailPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-detail',template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\detail\detail.html"*/'<ion-header class="kanit">\n\n\n\n  <ion-navbar>\n\n    <ion-title>รายละเอียด</ion-title>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content padding class="kanit">\n\n  <img [src]="dat.photo" *ngIf="dat.photo">\n\n  <img src="./assets/imgs/no-image.png" *ngIf="!dat.photo">\n\n  <div>\n\n    <ion-icon name="football" item-start large></ion-icon>\n\n    <h2>{{dat.pname}}</h2>\n\n    <p>{{dat.pdesc}}</p>\n\n  </div>\n\n\n\n  <ion-item>\n\n    <span item-left>{{dat.lat}}, {{dat.lon}}</span>\n\n    <button ion-button icon-left clear item-end>\n\n      {{dat.pdate}}\n\n    </button>\n\n  </ion-item>\n\n\n\n  <div id="map2" class="map2"></div>\n\n\n\n\n\n</ion-content>'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\detail\detail.html"*/,
+            selector: 'page-detail',template:/*ion-inline-start:"C:\apps\landslide_app\src\pages\detail\detail.html"*/'<ion-header class="kanit">\n\n  <ion-navbar>\n    <ion-title>หมู่บ้านในรัศมี 10 กิโลเมตร</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding class="kanit">\n\n  <div id="map2" class="map2"></div>\n  <p></p>\n  <ion-list>\n    <ion-list-header>\n      <h1>หมู่บ้านในรัศมี 10 กิโลเมตร</h1>\n    </ion-list-header>\n    <ion-item *ngFor="let v of vill10Km">{{v.properties.vill_nam_t}}</ion-item>\n  </ion-list>\n\n</ion-content>'/*ion-inline-end:"C:\apps\landslide_app\src\pages\detail\detail.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]])
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_4__providers_report_report__["a" /* ReportProvider */]])
     ], DetailPage);
     return DetailPage;
 }());
@@ -157,7 +113,7 @@ var DetailPage = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LayerPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(19);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -223,7 +179,7 @@ var LayerPage = /** @class */ (function () {
     };
     LayerPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-layer',template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\layer\layer.html"*/'<ion-header class="kanit">\n\n  <ion-toolbar>\n\n    <ion-title>\n\n      ชั้นข้อมูล\n\n    </ion-title>\n\n    <ion-buttons start>\n\n      <button ion-button (click)="dismiss()">\n\n        <span ion-text color="primary" showWhen="ios">Cancel</span>\n\n        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>\n\n      </button>\n\n    </ion-buttons>\n\n  </ion-toolbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding class="kanit">\n\n  <ion-list>\n\n    <ion-list-header>\n\n      เลือกชั้นข้อมูล\n\n    </ion-list-header>\n\n    <ion-item *ngFor="let o of lyrOver; let i = index">\n\n      <ion-label>{{o.name}}</ion-label>\n\n      <ion-checkbox [(ngModel)]="o.isChecked" (ionChange)="onCheckWms(o.lyr,$event.checked)"></ion-checkbox>\n\n    </ion-item>\n\n  </ion-list>\n\n  <p></p>\n\n  <p></p>\n\n  <ion-list radio-group (ionChange)="onSelect($event)">\n\n    <ion-list-header>\n\n      เลือกแผนที่ฐาน\n\n    </ion-list-header>\n\n\n\n    <ion-item *ngFor="let lyr of lyrBase; let i = index">\n\n      <ion-label>{{lyr.name}}</ion-label>\n\n      <ion-radio [value]="lyr.lyr" [checked]="lyr.isChecked"></ion-radio>\n\n    </ion-item>\n\n  </ion-list>\n\n</ion-content>'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\layer\layer.html"*/,
+            selector: 'page-layer',template:/*ion-inline-start:"C:\apps\landslide_app\src\pages\layer\layer.html"*/'<ion-header class="kanit">\n  <ion-toolbar>\n    <ion-title>\n      ชั้นข้อมูล\n    </ion-title>\n    <ion-buttons start>\n      <button ion-button (click)="dismiss()">\n        <span ion-text color="primary" showWhen="ios">Cancel</span>\n        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content padding class="kanit">\n  <ion-list>\n    <ion-list-header>\n      เลือกชั้นข้อมูล\n    </ion-list-header>\n    <ion-item *ngFor="let o of lyrOver; let i = index">\n      <ion-label>{{o.name}}</ion-label>\n      <ion-checkbox [(ngModel)]="o.isChecked" (ionChange)="onCheckWms(o.lyr,$event.checked)"></ion-checkbox>\n    </ion-item>\n  </ion-list>\n  <p></p>\n  <p></p>\n  <ion-list radio-group (ionChange)="onSelect($event)">\n    <ion-list-header>\n      เลือกแผนที่ฐาน\n    </ion-list-header>\n\n    <ion-item *ngFor="let lyr of lyrBase; let i = index">\n      <ion-label>{{lyr.name}}</ion-label>\n      <ion-radio [value]="lyr.lyr" [checked]="lyr.isChecked"></ion-radio>\n    </ion-item>\n  </ion-list>\n</ion-content>'/*ion-inline-end:"C:\apps\landslide_app\src\pages\layer\layer.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
@@ -242,10 +198,10 @@ var LayerPage = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ListPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_report_report__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_report_report__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__detail_detail__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment__ = __webpack_require__(291);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_moment__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -303,30 +259,46 @@ var ListPage = /** @class */ (function () {
         this.ref = ref;
         this.loadingCtrl = loadingCtrl;
         this.reportProvider = reportProvider;
+        this.pos = this.reportProvider.getLocation();
     }
     ListPage.prototype.ionViewDidLoad = function () {
-        // this.loadReport();
-        // this.content.enableScrollListener();
-        this.loadRain();
+        this.loadRain(this.pos.lat, this.pos.lon);
+        // this.loadVill10Km()
     };
-    ListPage.prototype.loadRain = function () {
+    ListPage.prototype.loadRain = function (lat, lon) {
         var _this = this;
-        this.reportProvider.getRain().then(function (res) {
+        // console.log(this.pos.lat, this.pos.lon)
+        this.reportProvider.getRain(lat, lon).then(function (res) {
             var wk = 'wk' + __WEBPACK_IMPORTED_MODULE_4_moment__().weeks();
             // console.log(res.features[0].properties)
             _this.reports = res.features[0].properties;
             _this.rainnow = _this.reports.raincur;
             _this.rain7day = _this.reports.rain7day;
             _this.rain2018 = _this.reports.rain2018;
+            _this.ls_risk = _this.reports.ls_risk;
             _this.rainAVWeek = _this.reports[wk];
-            console.log(_this.rainAVWeek);
+            if (_this.rainnow > 100 && _this.ls_risk == 3) {
+                _this.warning = 'อพยพ';
+            }
+            else if (_this.rainnow > 100 && _this.ls_risk <= 2) {
+                _this.warning = 'เตือนภัย';
+            }
+            else if (_this.rainnow <= 100 && _this.ls_risk == 3) {
+                _this.warning = 'เฝ้าระวัง';
+            }
+            else {
+                _this.warning = 'เฝ้าระวัง';
+            }
         }, function (error) {
             console.log(error);
         });
     };
-    ListPage.prototype.calWeekNumber = function () {
-        console.log();
-    };
+    // loadVill10Km() {
+    //   this.reportProvider.getVill10Km().then((res: any) => {
+    //     this.vill10Km = res.features[0].properties.vill_nam_t;
+    //     console.log(this.vill10Km)
+    //   })
+    // }
     ListPage.prototype.loadReport = function () {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
@@ -353,18 +325,21 @@ var ListPage = /** @class */ (function () {
             });
         });
     };
-    ListPage.prototype.viewReportDetail = function (r) {
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__detail_detail__["a" /* DetailPage */], { data: r });
+    ListPage.prototype.viewReportDetail = function () {
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__detail_detail__["a" /* DetailPage */], { data: [this.pos.lat, this.pos.lon] });
         // console.log(r)
     };
     ListPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-list',template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\list\list.html"*/'<ion-header class="kanit">\n\n\n\n  <ion-navbar>\n\n    <ion-title>แจ้งเตือน</ion-title>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content padding class="kanit">\n\n  <ion-card>\n\n    <ion-card-header>\n\n      ปริมาณน้ำฝนปัจจุบัน\n\n    </ion-card-header>\n\n    <ion-card-content>\n\n      <h1> {{ rainnow | number : \'1.2-2\' }} มม. </h1>\n\n    </ion-card-content>\n\n  </ion-card>\n\n\n\n  <ion-card>\n\n    <ion-card-header>\n\n      ปริมาณน้ำฝน 7 วันที่ผ่านมา\n\n    </ion-card-header>\n\n    <ion-card-content>\n\n      <h1>{{ rain7day | number : \'1.2-2\' }} มม.</h1>\n\n    </ion-card-content>\n\n  </ion-card>\n\n\n\n  <ion-card>\n\n    <ion-card-header>\n\n      ปริมาณน้ำฝนสะสม (1 ม.ค. ถึงปัจจุบัน)\n\n    </ion-card-header>\n\n    <ion-card-content>\n\n      <h1> {{ rain2018 | number : \'1.2-2\' }} มม.</h1>\n\n    </ion-card-content>\n\n  </ion-card>\n\n\n\n  <ion-card>\n\n    <ion-card-header>\n\n      ปริมาณน้ำฝนเฉลี่ย 30 ปี ของสัปดาห์ปัจจุบัน\n\n    </ion-card-header>\n\n    <ion-card-content>\n\n      <h1>{{ rainAVWeek | number : \'1.2-2\' }} มม.</h1>\n\n    </ion-card-content>\n\n  </ion-card>\n\n\n\n  <!-- <ion-list>\n\n    <button ion-item *ngFor="let r of reports" (click)="viewReportDetail(r)">\n\n      <ion-thumbnail item-left>\n\n        <img [src]="r.photo" *ngIf="r.photo">\n\n        <img src="./assets/imgs/no-image.png" *ngIf="!r.photo">\n\n      </ion-thumbnail>\n\n      <h1>{{ r.pname }}</h1>\n\n      <p ion-text *ngIf="r.pdate">{{ r.pdesc }}</p>\n\n      <p ion-text *ngIf="r.pdate">lat: {{ r.lat | number}} lon: {{ r.lon | number }}</p>\n\n      <p ion-text color="primary" item-right>View</p>\n\n    </button>\n\n  </ion-list> -->\n\n</ion-content>'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\list\list.html"*/,
+            selector: 'page-list',template:/*ion-inline-start:"C:\apps\landslide_app\src\pages\list\list.html"*/'<ion-header class="kanit">\n\n  <ion-navbar>\n    <ion-title>แจ้งเตือน</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding class="kanit">\n\n  <ion-card class="bg">\n    <ion-card-header>\n      สถานการณ์เตือนภัย\n    </ion-card-header>\n    <ion-card-content>\n      <ion-item class="bg">\n        <ion-avatar item-start>\n          <img src="./assets/icon/drop3.png">\n        </ion-avatar>\n        <h1>{{ warning }}</h1>\n        <p>gfdhgghgdjsdsgsgsdgsdgsgsgsgsgsgsf</p>\n      </ion-item>\n      <ion-row>\n        <ion-col>\n        </ion-col>\n        <ion-col>\n        </ion-col>\n        <ion-col>\n          <button ion-button icon-start clear (click)="viewReportDetail()">\n            <ion-icon name="text"></ion-icon>\n            <div>หมู่บ้านในรัศมี 10 กม.</div>\n          </button>\n        </ion-col>\n      </ion-row>\n\n    </ion-card-content>\n  </ion-card>\n\n  <!-- \n  <ion-card class="bg">\n    <ion-card-header>\n      หมู่บ้านในรัศมี 10 กม.\n    </ion-card-header>\n    <ion-card-content>\n    </ion-card-content>\n  </ion-card> -->\n\n\n  <ion-card class="bg">\n    <ion-card-header>\n      ปริมาณน้ำฝนปัจจุบัน (24 ชม)\n    </ion-card-header>\n    <ion-card-content>\n      <ion-item class="bg">\n        <ion-avatar item-start>\n          <img src="./assets/icon/drop3.png">\n        </ion-avatar>\n        <h1> {{ rainnow | number : \'1.2-2\' }} มม. </h1>\n        <p>gfdhgghgdjf</p>\n      </ion-item>\n    </ion-card-content>\n  </ion-card>\n\n  <ion-card class="bg">\n    <ion-card-header>\n      ปริมาณน้ำฝนสะสม 7 วันที่ผ่านมา\n    </ion-card-header>\n    <ion-card-content>\n      <ion-item class="bg">\n        <ion-avatar item-start>\n          <img src="./assets/icon/drop5.png">\n        </ion-avatar>\n        <h1>{{ rain7day | number : \'1.2-2\' }} มม.</h1>\n        <p>gfdhgghgdjf</p>\n      </ion-item>\n    </ion-card-content>\n  </ion-card>\n\n  <ion-card class="bg">\n    <ion-card-header>\n      ปริมาณน้ำฝนสะสม (1 ม.ค. ถึงปัจจุบัน)\n    </ion-card-header>\n    <ion-card-content>\n      <ion-item class="bg">\n        <ion-avatar item-start>\n          <img src="./assets/icon/rain2.png">\n        </ion-avatar>\n        <h1> {{ rain2018 | number : \'1.2-2\' }} มม.</h1>\n        <p>gfdhgghgdjf</p>\n      </ion-item>\n    </ion-card-content>\n  </ion-card>\n\n  <ion-card class="bg">\n    <ion-card-header>\n      ปริมาณน้ำฝนเฉลี่ย 30 ปี ของสัปดาห์ปัจจุบัน\n    </ion-card-header>\n    <ion-card-content>\n      <ion-item class="bg">\n        <ion-avatar item-start>\n          <img src="./assets/icon/water.png">\n        </ion-avatar>\n        <h1>{{ rainAVWeek | number : \'1.2-2\' }} มม.</h1>\n        <p>gfdhgghgdjf</p>\n      </ion-item>\n    </ion-card-content>\n  </ion-card>\n\n\n\n</ion-content>'/*ion-inline-end:"C:\apps\landslide_app\src\pages\list\list.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* ChangeDetectorRef */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__providers_report_report__["a" /* ReportProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_report_report__["a" /* ReportProvider */]) === "function" && _e || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* ChangeDetectorRef */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */],
+            __WEBPACK_IMPORTED_MODULE_2__providers_report_report__["a" /* ReportProvider */]])
     ], ListPage);
     return ListPage;
-    var _a, _b, _c, _d, _e;
 }());
 
 //# sourceMappingURL=list.js.map
@@ -377,9 +352,9 @@ var ListPage = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ReportPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__ = __webpack_require__(162);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_report_report__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__ = __webpack_require__(286);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_report_report__ = __webpack_require__(42);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -494,12 +469,18 @@ var ReportPage = /** @class */ (function () {
     };
     ReportPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-report',template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\report\report.html"*/'<ion-header class="kanit">\n\n  <ion-navbar color="pk-gold">\n\n    <ion-title>เพิ่มรายงาน</ion-title>\n\n    <ion-buttons end>\n\n      <button ion-button color="primary" icon-left (click)="save()" [disabled]="name.errors && (name.dirty || name.touched)">\n\n        <ion-icon name="create"></ion-icon>\n\n        SAVE\n\n      </button>\n\n    </ion-buttons>\n\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content class="kanit">\n\n  <ion-item-group>\n\n    <ion-item-divider color="light">รายละเอียดสถานที่</ion-item-divider>\n\n    <ion-item>\n\n      <ion-label stacked>สถานที่</ion-label>\n\n      <ion-input type="text" [(ngModel)]="parking.pname" id="name" #name="ngModel" placeholder="ชื่อสถานที่" required></ion-input>\n\n    </ion-item>\n\n    <div padding class="error-border" *ngIf="name.errors && (name.dirty || name.touched)">กรุณากรอกข้อมูลสถานที่</div>\n\n    <ion-item>\n\n      <ion-label stacked>รายละเอียด</ion-label>\n\n      <ion-textarea [(ngModel)]="parking.pdesc" placeholder="เพิ่มรายละเอียดข้อมูลสถานที่ "></ion-textarea>\n\n    </ion-item>\n\n    <p padding>lat: {{parking.lat | number}} lon: {{parking.lon | number}}</p>\n\n  </ion-item-group>\n\n  <ion-item-group>\n\n    <ion-item-divider color="light">รูปสถานที่</ion-item-divider>\n\n    <ion-card>\n\n      <ion-item>\n\n        <ion-avatar item-left>\n\n          <img src="./assets/imgs/no-person.jpg">\n\n        </ion-avatar>\n\n        <h2>Take or Browse Picture</h2>\n\n        <p>รูปภาพสถานที่</p>\n\n      </ion-item>\n\n      <img [src]="parking.photo" *ngIf="parking.photo">\n\n      <img src="./assets/imgs/no-image.jpg" *ngIf="!parking.photo" padding>\n\n      <ion-row>\n\n        <ion-col>\n\n          <button ion-button clear small icon-left (click)="takePicture()">\n\n            <ion-icon name="camera"></ion-icon>\n\n            <div>ถ่ายภาพ</div>\n\n          </button>\n\n        </ion-col>\n\n        <ion-col>\n\n          <button ion-button clear small icon-left (click)="browsePicture()">\n\n            <ion-icon name="folder-open"></ion-icon>\n\n            <div>เลือกรูป</div>\n\n          </button>\n\n        </ion-col>\n\n        <ion-col>\n\n          <button ion-button clear small color="danger" icon-left (click)="removePicture()">\n\n            <ion-icon name="trash"></ion-icon>\n\n            <div>ลบรูป</div>\n\n          </button>\n\n        </ion-col>\n\n      </ion-row>\n\n    </ion-card>\n\n  </ion-item-group>\n\n</ion-content>'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\report\report.html"*/,
+            selector: 'page-report',template:/*ion-inline-start:"C:\apps\landslide_app\src\pages\report\report.html"*/'<ion-header class="kanit">\n  <ion-navbar color="pk-gold">\n    <ion-title>เพิ่มรายงาน</ion-title>\n    <ion-buttons end>\n      <button ion-button color="primary" icon-left (click)="save()" [disabled]="name.errors && (name.dirty || name.touched)">\n        <ion-icon name="create"></ion-icon>\n        SAVE\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n<ion-content class="kanit">\n  <ion-item-group>\n    <ion-item-divider color="light">รายละเอียดสถานที่</ion-item-divider>\n    <ion-item>\n      <ion-label stacked>สถานที่</ion-label>\n      <ion-input type="text" [(ngModel)]="parking.pname" id="name" #name="ngModel" placeholder="ชื่อสถานที่" required></ion-input>\n    </ion-item>\n    <div padding class="error-border" *ngIf="name.errors && (name.dirty || name.touched)">กรุณากรอกข้อมูลสถานที่</div>\n    <ion-item>\n      <ion-label stacked>รายละเอียด</ion-label>\n      <ion-textarea [(ngModel)]="parking.pdesc" placeholder="เพิ่มรายละเอียดข้อมูลสถานที่ "></ion-textarea>\n    </ion-item>\n    <p padding>lat: {{parking.lat | number}} lon: {{parking.lon | number}}</p>\n  </ion-item-group>\n  <ion-item-group>\n    <ion-item-divider color="light">รูปสถานที่</ion-item-divider>\n    <ion-card>\n      <ion-item>\n        <ion-avatar item-left>\n          <img src="./assets/imgs/no-person.jpg">\n        </ion-avatar>\n        <h2>Take or Browse Picture</h2>\n        <p>รูปภาพสถานที่</p>\n      </ion-item>\n      <img [src]="parking.photo" *ngIf="parking.photo">\n      <img src="./assets/imgs/no-image.jpg" *ngIf="!parking.photo" padding>\n      <ion-row>\n        <ion-col>\n          <button ion-button clear small icon-left (click)="takePicture()">\n            <ion-icon name="camera"></ion-icon>\n            <div>ถ่ายภาพ</div>\n          </button>\n        </ion-col>\n        <ion-col>\n          <button ion-button clear small icon-left (click)="browsePicture()">\n            <ion-icon name="folder-open"></ion-icon>\n            <div>เลือกรูป</div>\n          </button>\n        </ion-col>\n        <ion-col>\n          <button ion-button clear small color="danger" icon-left (click)="removePicture()">\n            <ion-icon name="trash"></ion-icon>\n            <div>ลบรูป</div>\n          </button>\n        </ion-col>\n      </ion-row>\n    </ion-card>\n  </ion-item-group>\n</ion-content>'/*ion-inline-end:"C:\apps\landslide_app\src\pages\report\report.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__["a" /* Camera */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__["a" /* Camera */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3__providers_report_report__["a" /* ReportProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__providers_report_report__["a" /* ReportProvider */]) === "function" && _f || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */],
+            __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__["a" /* Camera */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */],
+            __WEBPACK_IMPORTED_MODULE_3__providers_report_report__["a" /* ReportProvider */]
+            // private facebook: FacebookServiceProvider
+        ])
     ], ReportPage);
     return ReportPage;
-    var _a, _b, _c, _d, _e, _f;
 }());
 
 //# sourceMappingURL=report.js.map
@@ -528,19 +509,19 @@ webpackEmptyAsyncContext.id = 117;
 
 var map = {
 	"../pages/detail/detail.module": [
-		287,
+		413,
 		3
 	],
 	"../pages/layer/layer.module": [
-		288,
+		414,
 		2
 	],
 	"../pages/list/list.module": [
-		289,
+		415,
 		1
 	],
 	"../pages/report/report.module": [
-		290,
+		416,
 		0
 	]
 };
@@ -560,14 +541,14 @@ module.exports = webpackAsyncContext;
 
 /***/ }),
 
-/***/ 205:
+/***/ 329:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TabsPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contact_contact__ = __webpack_require__(206);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home_home__ = __webpack_require__(207);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contact_contact__ = __webpack_require__(330);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home_home__ = __webpack_require__(331);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__list_list__ = __webpack_require__(104);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -589,7 +570,7 @@ var TabsPage = /** @class */ (function () {
         this.tab3Root = __WEBPACK_IMPORTED_MODULE_1__contact_contact__["a" /* ContactPage */];
     }
     TabsPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\tabs\tabs.html"*/'<ion-tabs class="kanit">\n\n  <ion-tab [root]="tab1Root" tabTitle="แผนที่ความเสี่ยง" tabIcon="globe"></ion-tab>\n\n  <ion-tab [root]="tab2Root" tabTitle="แจ้งเตือน" tabIcon="notifications"></ion-tab>\n\n  <ion-tab [root]="tab3Root" tabTitle="เกี่ยวกับเรา" tabIcon="contacts"></ion-tab>\n\n</ion-tabs>'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\tabs\tabs.html"*/
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"C:\apps\landslide_app\src\pages\tabs\tabs.html"*/'<ion-tabs class="kanit">\n  <ion-tab [root]="tab1Root" tabTitle="แผนที่ความเสี่ยง" tabIcon="globe"></ion-tab>\n  <ion-tab [root]="tab2Root" tabTitle="แจ้งเตือน" tabIcon="notifications"></ion-tab>\n  <ion-tab [root]="tab3Root" tabTitle="เกี่ยวกับเรา" tabIcon="contacts"></ion-tab>\n</ion-tabs>'/*ion-inline-end:"C:\apps\landslide_app\src\pages\tabs\tabs.html"*/
         }),
         __metadata("design:paramtypes", [])
     ], TabsPage);
@@ -600,13 +581,13 @@ var TabsPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 206:
+/***/ 330:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ContactPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(19);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -624,7 +605,7 @@ var ContactPage = /** @class */ (function () {
     }
     ContactPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-contact',template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\contact\contact.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>\n\n      Contact\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content>\n\n  <ion-list>\n\n    <ion-list-header>Follow us on Twitter</ion-list-header>\n\n    <ion-item>\n\n      <ion-icon name="ionic" item-start></ion-icon>\n\n      @ionicframework\n\n    </ion-item>\n\n  </ion-list>\n\n</ion-content>\n\n'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\contact\contact.html"*/
+            selector: 'page-contact',template:/*ion-inline-start:"C:\apps\landslide_app\src\pages\contact\contact.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      Contact\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-list-header>Follow us on Twitter</ion-list-header>\n    <ion-item>\n      <ion-icon name="ionic" item-start></ion-icon>\n      ปปปปปปปปxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n    </ion-item>\n  </ion-list>\n</ion-content>'/*ion-inline-end:"C:\apps\landslide_app\src\pages\contact\contact.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]])
     ], ContactPage);
@@ -635,20 +616,20 @@ var ContactPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 207:
+/***/ 331:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_leaflet__ = __webpack_require__(160);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_leaflet___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_leaflet__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet_gridlayer_googlemutant__ = __webpack_require__(161);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet_gridlayer_googlemutant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_leaflet_gridlayer_googlemutant__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_geolocation__ = __webpack_require__(208);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_geolocation__ = __webpack_require__(332);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__report_report__ = __webpack_require__(105);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_report_report__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_report_report__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__layer_layer__ = __webpack_require__(103);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -680,6 +661,7 @@ var HomePage = /** @class */ (function () {
     }
     HomePage.prototype.ionViewDidLoad = function () {
         this.loadMap();
+        this.showLocation();
     };
     HomePage.prototype.loadMap = function () {
         this.map = __WEBPACK_IMPORTED_MODULE_2_leaflet__["map"]('map', {
@@ -688,21 +670,21 @@ var HomePage = /** @class */ (function () {
             zoomControl: false,
             attributionControl: false,
         });
-        this.roads = __WEBPACK_IMPORTED_MODULE_2_leaflet__["gridLayer"].googleMutant({
-            type: 'roadmap',
-            zIndex: 0
+        this.roads = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"]('http://{s}.google.com/vt/lyrs=r&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
         });
-        this.satellite = __WEBPACK_IMPORTED_MODULE_2_leaflet__["gridLayer"].googleMutant({
-            type: 'satellite',
-            zIndex: 0
+        this.satellite = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"]('http://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
         });
-        this.hybrid = __WEBPACK_IMPORTED_MODULE_2_leaflet__["gridLayer"].googleMutant({
-            type: 'hybrid',
-            zIndex: 0
+        this.hybrid = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"]('http://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
         });
-        this.terrain = __WEBPACK_IMPORTED_MODULE_2_leaflet__["gridLayer"].googleMutant({
-            type: 'terrain',
-            zIndex: 0
+        this.terrain = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"]('http://{s}.google.com/vt/lyrs=t,m&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
         });
         // overlay
         // Radar From TMD&NECTEC
@@ -785,32 +767,6 @@ var HomePage = /** @class */ (function () {
             CQL_FILTER: 'prov_code=53',
             zIndex: 5
         });
-        // const ud_disaster_commun = L.tileLayer.wms("http://cgi.uru.ac.th/gs-rain/ows?", {
-        //   layers: 'rain:disaster_community_4326',
-        //   format: 'image/png',
-        //   transparent: true
-        // });
-        /*  this.longlin_parcel_centroid = L.tileLayer.wms("http://cgi.uru.ac.th/gs-durian/ows?", {
-            layers: 'longlin:longlin_parcel_centroid',
-            format: 'image/png',
-            transparent: true,
-            styles: 'tree_green',
-            zIndex: 5
-          });
-      
-          this.ud_rain = L.tileLayer.wms("http://cgi.uru.ac.th/gs-rain/ows?", {
-            layers: 'rain:rain_now_report_ud_tb',
-            format: 'image/png',
-            transparent: true,
-            zIndex: 5
-          });
-      
-          this.ud_hp = L.tileLayer.wms("http://cgi.uru.ac.th/gs-hotspot/ows?", {
-            layers: 'hp:hotspot_ud_today',
-            format: 'image/png',
-            transparent: true,
-            zIndex: 5
-          }); */
         this.lyrGroup = {
             lyr: [
                 { name: 'ขอบเขตอำเภอ', lyr: 'ud_amp', wms: this.ud_amp.addTo(this.map), type: 'overlay', 'isChecked': true },
@@ -827,9 +783,6 @@ var HomePage = /** @class */ (function () {
                 { name: 'ฝนรายชั่วโมง(มิลลิเมตร)', lyr: 'tmdrainfall', wms: this.tmdrainfall.addTo(this.map), type: 'overlay', 'isChecked': true },
                 { name: 'ฝนสะสมย้อนหลัง 7 วัน(มิลลิเมตร)', lyr: 'rainfall7day', wms: this.rainfall7day, type: 'overlay', 'isChecked': false },
                 { name: 'หมู่บ้าน', lyr: 'ud_vill', wms: this.ud_vill, type: 'overlay', 'isChecked': false },
-                //{ name: 'แปลงปลูกทุเรียน', lyr: 'longlin_parcel_centroid', wms: this.longlin_parcel_centroid, type: 'overlay', 'isChecked': false },
-                //{ name: 'สถานีที่มีฝนตก', lyr: 'ud_rain', wms: this.ud_rain.addTo(this.map), type: 'overlay', 'isChecked': false },
-                //{ name: 'จุดเกิดไฟ', lyr: 'ud_hp', wms: this.ud_hp.addTo(this.map), type: 'overlay', 'isChecked': true },
                 { name: 'แผนที่ถนน', lyr: 'roads', wms: this.roads, type: 'base', 'isChecked': false },
                 { name: 'แผนที่ภาพดาวเทียม', lyr: 'satellite', wms: this.satellite, type: 'base', 'isChecked': false },
                 { name: 'แผนที่ผสม', lyr: 'hybrid', wms: this.hybrid, type: 'base', 'isChecked': false },
@@ -904,7 +857,7 @@ var HomePage = /** @class */ (function () {
     };
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\home\home.html"*/'<!--<ion-header class="kanit">\n\n  <ion-navbar transparent>\n\n    <ion-title> </ion-title>\n\n  </ion-navbar>\n\n</ion-header>-->\n\n\n\n<ion-content class="kanit">\n\n  <div id="map" class="map">\n\n    <div>\n\n\n\n      <button ion-fab color="light" id="feb" (click)="showLocation()" style="bottom: 50%">\n\n        <ion-icon name="locate"></ion-icon>\n\n      </button>\n\n\n\n      <button ion-fab color="light" id="feb" (click)="selectLayers()" style="bottom: 40%">\n\n        <ion-icon name="logo-buffer"></ion-icon>\n\n      </button>\n\n\n\n      <button ion-fab color="light" id="feb" (click)="gotoReport()" style="bottom: 30%">\n\n        <ion-icon name="create"></ion-icon>\n\n      </button>\n\n\n\n    </div>\n\n  </div>\n\n\n\n</ion-content>'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\home\home.html"*/
+            selector: 'page-home',template:/*ion-inline-start:"C:\apps\landslide_app\src\pages\home\home.html"*/'<!--<ion-header class="kanit">\n  <ion-navbar transparent>\n    <ion-title> </ion-title>\n  </ion-navbar>\n</ion-header>-->\n\n<ion-content class="kanit">\n  <div id="map" class="map">\n    <div>\n\n      <button ion-fab color="light" id="feb" (click)="showLocation()" style="bottom: 50%">\n        <ion-icon name="locate"></ion-icon>\n      </button>\n\n      <button ion-fab color="light" id="feb" (click)="selectLayers()" style="bottom: 40%">\n        <ion-icon name="logo-buffer"></ion-icon>\n      </button>\n\n      <button ion-fab color="light" id="feb" (click)="gotoReport()" style="bottom: 30%">\n        <ion-icon name="create"></ion-icon>\n      </button>\n\n    </div>\n  </div>\n\n</ion-content>'/*ion-inline-end:"C:\apps\landslide_app\src\pages\home\home.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_4__ionic_native_geolocation__["a" /* Geolocation */],
@@ -920,13 +873,13 @@ var HomePage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 209:
+/***/ 333:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(210);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(230);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(334);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(354);
 
 
 Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_1__app_module__["a" /* AppModule */]);
@@ -934,28 +887,28 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 
 /***/ }),
 
-/***/ 230:
+/***/ 354:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_component__ = __webpack_require__(285);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_about_about__ = __webpack_require__(286);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_contact_contact__ = __webpack_require__(206);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_home_home__ = __webpack_require__(207);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_tabs_tabs__ = __webpack_require__(205);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_status_bar__ = __webpack_require__(203);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_splash_screen__ = __webpack_require__(204);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__providers_report_report__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_component__ = __webpack_require__(411);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_about_about__ = __webpack_require__(412);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_contact_contact__ = __webpack_require__(330);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_home_home__ = __webpack_require__(331);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_tabs_tabs__ = __webpack_require__(329);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_status_bar__ = __webpack_require__(327);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_splash_screen__ = __webpack_require__(328);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__providers_report_report__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_detail_detail__ = __webpack_require__(102);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_list_list__ = __webpack_require__(104);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_report_report__ = __webpack_require__(105);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__angular_common_http__ = __webpack_require__(79);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__ionic_native_geolocation__ = __webpack_require__(208);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__ionic_native_camera__ = __webpack_require__(162);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__angular_common_http__ = __webpack_require__(162);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__ionic_native_geolocation__ = __webpack_require__(332);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__ionic_native_camera__ = __webpack_require__(286);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_layer_layer__ = __webpack_require__(103);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1038,16 +991,285 @@ var AppModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 285:
+/***/ 385:
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./af": 163,
+	"./af.js": 163,
+	"./ar": 164,
+	"./ar-dz": 165,
+	"./ar-dz.js": 165,
+	"./ar-kw": 166,
+	"./ar-kw.js": 166,
+	"./ar-ly": 167,
+	"./ar-ly.js": 167,
+	"./ar-ma": 168,
+	"./ar-ma.js": 168,
+	"./ar-sa": 169,
+	"./ar-sa.js": 169,
+	"./ar-tn": 170,
+	"./ar-tn.js": 170,
+	"./ar.js": 164,
+	"./az": 171,
+	"./az.js": 171,
+	"./be": 172,
+	"./be.js": 172,
+	"./bg": 173,
+	"./bg.js": 173,
+	"./bm": 174,
+	"./bm.js": 174,
+	"./bn": 175,
+	"./bn.js": 175,
+	"./bo": 176,
+	"./bo.js": 176,
+	"./br": 177,
+	"./br.js": 177,
+	"./bs": 178,
+	"./bs.js": 178,
+	"./ca": 179,
+	"./ca.js": 179,
+	"./cs": 180,
+	"./cs.js": 180,
+	"./cv": 181,
+	"./cv.js": 181,
+	"./cy": 182,
+	"./cy.js": 182,
+	"./da": 183,
+	"./da.js": 183,
+	"./de": 184,
+	"./de-at": 185,
+	"./de-at.js": 185,
+	"./de-ch": 186,
+	"./de-ch.js": 186,
+	"./de.js": 184,
+	"./dv": 187,
+	"./dv.js": 187,
+	"./el": 188,
+	"./el.js": 188,
+	"./en-au": 189,
+	"./en-au.js": 189,
+	"./en-ca": 190,
+	"./en-ca.js": 190,
+	"./en-gb": 191,
+	"./en-gb.js": 191,
+	"./en-ie": 192,
+	"./en-ie.js": 192,
+	"./en-il": 193,
+	"./en-il.js": 193,
+	"./en-nz": 194,
+	"./en-nz.js": 194,
+	"./eo": 195,
+	"./eo.js": 195,
+	"./es": 196,
+	"./es-do": 197,
+	"./es-do.js": 197,
+	"./es-us": 198,
+	"./es-us.js": 198,
+	"./es.js": 196,
+	"./et": 199,
+	"./et.js": 199,
+	"./eu": 200,
+	"./eu.js": 200,
+	"./fa": 201,
+	"./fa.js": 201,
+	"./fi": 202,
+	"./fi.js": 202,
+	"./fo": 203,
+	"./fo.js": 203,
+	"./fr": 204,
+	"./fr-ca": 205,
+	"./fr-ca.js": 205,
+	"./fr-ch": 206,
+	"./fr-ch.js": 206,
+	"./fr.js": 204,
+	"./fy": 207,
+	"./fy.js": 207,
+	"./gd": 208,
+	"./gd.js": 208,
+	"./gl": 209,
+	"./gl.js": 209,
+	"./gom-latn": 210,
+	"./gom-latn.js": 210,
+	"./gu": 211,
+	"./gu.js": 211,
+	"./he": 212,
+	"./he.js": 212,
+	"./hi": 213,
+	"./hi.js": 213,
+	"./hr": 214,
+	"./hr.js": 214,
+	"./hu": 215,
+	"./hu.js": 215,
+	"./hy-am": 216,
+	"./hy-am.js": 216,
+	"./id": 217,
+	"./id.js": 217,
+	"./is": 218,
+	"./is.js": 218,
+	"./it": 219,
+	"./it.js": 219,
+	"./ja": 220,
+	"./ja.js": 220,
+	"./jv": 221,
+	"./jv.js": 221,
+	"./ka": 222,
+	"./ka.js": 222,
+	"./kk": 223,
+	"./kk.js": 223,
+	"./km": 224,
+	"./km.js": 224,
+	"./kn": 225,
+	"./kn.js": 225,
+	"./ko": 226,
+	"./ko.js": 226,
+	"./ky": 227,
+	"./ky.js": 227,
+	"./lb": 228,
+	"./lb.js": 228,
+	"./lo": 229,
+	"./lo.js": 229,
+	"./lt": 230,
+	"./lt.js": 230,
+	"./lv": 231,
+	"./lv.js": 231,
+	"./me": 232,
+	"./me.js": 232,
+	"./mi": 233,
+	"./mi.js": 233,
+	"./mk": 234,
+	"./mk.js": 234,
+	"./ml": 235,
+	"./ml.js": 235,
+	"./mn": 236,
+	"./mn.js": 236,
+	"./mr": 237,
+	"./mr.js": 237,
+	"./ms": 238,
+	"./ms-my": 239,
+	"./ms-my.js": 239,
+	"./ms.js": 238,
+	"./mt": 240,
+	"./mt.js": 240,
+	"./my": 241,
+	"./my.js": 241,
+	"./nb": 242,
+	"./nb.js": 242,
+	"./ne": 243,
+	"./ne.js": 243,
+	"./nl": 244,
+	"./nl-be": 245,
+	"./nl-be.js": 245,
+	"./nl.js": 244,
+	"./nn": 246,
+	"./nn.js": 246,
+	"./pa-in": 247,
+	"./pa-in.js": 247,
+	"./pl": 248,
+	"./pl.js": 248,
+	"./pt": 249,
+	"./pt-br": 250,
+	"./pt-br.js": 250,
+	"./pt.js": 249,
+	"./ro": 251,
+	"./ro.js": 251,
+	"./ru": 252,
+	"./ru.js": 252,
+	"./sd": 253,
+	"./sd.js": 253,
+	"./se": 254,
+	"./se.js": 254,
+	"./si": 255,
+	"./si.js": 255,
+	"./sk": 256,
+	"./sk.js": 256,
+	"./sl": 257,
+	"./sl.js": 257,
+	"./sq": 258,
+	"./sq.js": 258,
+	"./sr": 259,
+	"./sr-cyrl": 260,
+	"./sr-cyrl.js": 260,
+	"./sr.js": 259,
+	"./ss": 261,
+	"./ss.js": 261,
+	"./sv": 262,
+	"./sv.js": 262,
+	"./sw": 263,
+	"./sw.js": 263,
+	"./ta": 264,
+	"./ta.js": 264,
+	"./te": 265,
+	"./te.js": 265,
+	"./tet": 266,
+	"./tet.js": 266,
+	"./tg": 267,
+	"./tg.js": 267,
+	"./th": 268,
+	"./th.js": 268,
+	"./tl-ph": 269,
+	"./tl-ph.js": 269,
+	"./tlh": 270,
+	"./tlh.js": 270,
+	"./tr": 271,
+	"./tr.js": 271,
+	"./tzl": 272,
+	"./tzl.js": 272,
+	"./tzm": 273,
+	"./tzm-latn": 274,
+	"./tzm-latn.js": 274,
+	"./tzm.js": 273,
+	"./ug-cn": 275,
+	"./ug-cn.js": 275,
+	"./uk": 276,
+	"./uk.js": 276,
+	"./ur": 277,
+	"./ur.js": 277,
+	"./uz": 278,
+	"./uz-latn": 279,
+	"./uz-latn.js": 279,
+	"./uz.js": 278,
+	"./vi": 280,
+	"./vi.js": 280,
+	"./x-pseudo": 281,
+	"./x-pseudo.js": 281,
+	"./yo": 282,
+	"./yo.js": 282,
+	"./zh-cn": 283,
+	"./zh-cn.js": 283,
+	"./zh-hk": 284,
+	"./zh-hk.js": 284,
+	"./zh-tw": 285,
+	"./zh-tw.js": 285
+};
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number or string
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 385;
+
+/***/ }),
+
+/***/ 411:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(203);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(204);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_tabs_tabs__ = __webpack_require__(205);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(327);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(328);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_tabs_tabs__ = __webpack_require__(329);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1073,7 +1295,7 @@ var MyApp = /** @class */ (function () {
         });
     }
     MyApp = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\app\app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n\n'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\app\app.html"*/
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"C:\apps\landslide_app\src\app\app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"C:\apps\landslide_app\src\app\app.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
     ], MyApp);
@@ -1084,13 +1306,13 @@ var MyApp = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 286:
+/***/ 412:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AboutPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(19);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1108,7 +1330,7 @@ var AboutPage = /** @class */ (function () {
     }
     AboutPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-about',template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\about\about.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>\n\n      About\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n\n\n</ion-content>\n\n'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\about\about.html"*/
+            selector: 'page-about',template:/*ion-inline-start:"C:\apps\landslide_app\src\pages\about\about.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      About\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n</ion-content>\n'/*ion-inline-end:"C:\apps\landslide_app\src\pages\about\about.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]])
     ], AboutPage);
@@ -1119,281 +1341,12 @@ var AboutPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 416:
-/***/ (function(module, exports, __webpack_require__) {
-
-var map = {
-	"./af": 292,
-	"./af.js": 292,
-	"./ar": 293,
-	"./ar-dz": 294,
-	"./ar-dz.js": 294,
-	"./ar-kw": 295,
-	"./ar-kw.js": 295,
-	"./ar-ly": 296,
-	"./ar-ly.js": 296,
-	"./ar-ma": 297,
-	"./ar-ma.js": 297,
-	"./ar-sa": 298,
-	"./ar-sa.js": 298,
-	"./ar-tn": 299,
-	"./ar-tn.js": 299,
-	"./ar.js": 293,
-	"./az": 300,
-	"./az.js": 300,
-	"./be": 301,
-	"./be.js": 301,
-	"./bg": 302,
-	"./bg.js": 302,
-	"./bm": 303,
-	"./bm.js": 303,
-	"./bn": 304,
-	"./bn.js": 304,
-	"./bo": 305,
-	"./bo.js": 305,
-	"./br": 306,
-	"./br.js": 306,
-	"./bs": 307,
-	"./bs.js": 307,
-	"./ca": 308,
-	"./ca.js": 308,
-	"./cs": 309,
-	"./cs.js": 309,
-	"./cv": 310,
-	"./cv.js": 310,
-	"./cy": 311,
-	"./cy.js": 311,
-	"./da": 312,
-	"./da.js": 312,
-	"./de": 313,
-	"./de-at": 314,
-	"./de-at.js": 314,
-	"./de-ch": 315,
-	"./de-ch.js": 315,
-	"./de.js": 313,
-	"./dv": 316,
-	"./dv.js": 316,
-	"./el": 317,
-	"./el.js": 317,
-	"./en-au": 318,
-	"./en-au.js": 318,
-	"./en-ca": 319,
-	"./en-ca.js": 319,
-	"./en-gb": 320,
-	"./en-gb.js": 320,
-	"./en-ie": 321,
-	"./en-ie.js": 321,
-	"./en-il": 322,
-	"./en-il.js": 322,
-	"./en-nz": 323,
-	"./en-nz.js": 323,
-	"./eo": 324,
-	"./eo.js": 324,
-	"./es": 325,
-	"./es-do": 326,
-	"./es-do.js": 326,
-	"./es-us": 327,
-	"./es-us.js": 327,
-	"./es.js": 325,
-	"./et": 328,
-	"./et.js": 328,
-	"./eu": 329,
-	"./eu.js": 329,
-	"./fa": 330,
-	"./fa.js": 330,
-	"./fi": 331,
-	"./fi.js": 331,
-	"./fo": 332,
-	"./fo.js": 332,
-	"./fr": 333,
-	"./fr-ca": 334,
-	"./fr-ca.js": 334,
-	"./fr-ch": 335,
-	"./fr-ch.js": 335,
-	"./fr.js": 333,
-	"./fy": 336,
-	"./fy.js": 336,
-	"./gd": 337,
-	"./gd.js": 337,
-	"./gl": 338,
-	"./gl.js": 338,
-	"./gom-latn": 339,
-	"./gom-latn.js": 339,
-	"./gu": 340,
-	"./gu.js": 340,
-	"./he": 341,
-	"./he.js": 341,
-	"./hi": 342,
-	"./hi.js": 342,
-	"./hr": 343,
-	"./hr.js": 343,
-	"./hu": 344,
-	"./hu.js": 344,
-	"./hy-am": 345,
-	"./hy-am.js": 345,
-	"./id": 346,
-	"./id.js": 346,
-	"./is": 347,
-	"./is.js": 347,
-	"./it": 348,
-	"./it.js": 348,
-	"./ja": 349,
-	"./ja.js": 349,
-	"./jv": 350,
-	"./jv.js": 350,
-	"./ka": 351,
-	"./ka.js": 351,
-	"./kk": 352,
-	"./kk.js": 352,
-	"./km": 353,
-	"./km.js": 353,
-	"./kn": 354,
-	"./kn.js": 354,
-	"./ko": 355,
-	"./ko.js": 355,
-	"./ky": 356,
-	"./ky.js": 356,
-	"./lb": 357,
-	"./lb.js": 357,
-	"./lo": 358,
-	"./lo.js": 358,
-	"./lt": 359,
-	"./lt.js": 359,
-	"./lv": 360,
-	"./lv.js": 360,
-	"./me": 361,
-	"./me.js": 361,
-	"./mi": 362,
-	"./mi.js": 362,
-	"./mk": 363,
-	"./mk.js": 363,
-	"./ml": 364,
-	"./ml.js": 364,
-	"./mn": 365,
-	"./mn.js": 365,
-	"./mr": 366,
-	"./mr.js": 366,
-	"./ms": 367,
-	"./ms-my": 368,
-	"./ms-my.js": 368,
-	"./ms.js": 367,
-	"./mt": 369,
-	"./mt.js": 369,
-	"./my": 370,
-	"./my.js": 370,
-	"./nb": 371,
-	"./nb.js": 371,
-	"./ne": 372,
-	"./ne.js": 372,
-	"./nl": 373,
-	"./nl-be": 374,
-	"./nl-be.js": 374,
-	"./nl.js": 373,
-	"./nn": 375,
-	"./nn.js": 375,
-	"./pa-in": 376,
-	"./pa-in.js": 376,
-	"./pl": 377,
-	"./pl.js": 377,
-	"./pt": 378,
-	"./pt-br": 379,
-	"./pt-br.js": 379,
-	"./pt.js": 378,
-	"./ro": 380,
-	"./ro.js": 380,
-	"./ru": 381,
-	"./ru.js": 381,
-	"./sd": 382,
-	"./sd.js": 382,
-	"./se": 383,
-	"./se.js": 383,
-	"./si": 384,
-	"./si.js": 384,
-	"./sk": 385,
-	"./sk.js": 385,
-	"./sl": 386,
-	"./sl.js": 386,
-	"./sq": 387,
-	"./sq.js": 387,
-	"./sr": 388,
-	"./sr-cyrl": 389,
-	"./sr-cyrl.js": 389,
-	"./sr.js": 388,
-	"./ss": 390,
-	"./ss.js": 390,
-	"./sv": 391,
-	"./sv.js": 391,
-	"./sw": 392,
-	"./sw.js": 392,
-	"./ta": 393,
-	"./ta.js": 393,
-	"./te": 394,
-	"./te.js": 394,
-	"./tet": 395,
-	"./tet.js": 395,
-	"./tg": 396,
-	"./tg.js": 396,
-	"./th": 397,
-	"./th.js": 397,
-	"./tl-ph": 398,
-	"./tl-ph.js": 398,
-	"./tlh": 399,
-	"./tlh.js": 399,
-	"./tr": 400,
-	"./tr.js": 400,
-	"./tzl": 401,
-	"./tzl.js": 401,
-	"./tzm": 402,
-	"./tzm-latn": 403,
-	"./tzm-latn.js": 403,
-	"./tzm.js": 402,
-	"./ug-cn": 404,
-	"./ug-cn.js": 404,
-	"./uk": 405,
-	"./uk.js": 405,
-	"./ur": 406,
-	"./ur.js": 406,
-	"./uz": 407,
-	"./uz-latn": 408,
-	"./uz-latn.js": 408,
-	"./uz.js": 407,
-	"./vi": 409,
-	"./vi.js": 409,
-	"./x-pseudo": 410,
-	"./x-pseudo.js": 410,
-	"./yo": 411,
-	"./yo.js": 411,
-	"./zh-cn": 412,
-	"./zh-cn.js": 412,
-	"./zh-hk": 413,
-	"./zh-hk.js": 413,
-	"./zh-tw": 414,
-	"./zh-tw.js": 414
-};
-function webpackContext(req) {
-	return __webpack_require__(webpackContextResolve(req));
-};
-function webpackContextResolve(req) {
-	var id = map[req];
-	if(!(id + 1)) // check for number or string
-		throw new Error("Cannot find module '" + req + "'.");
-	return id;
-};
-webpackContext.keys = function webpackContextKeys() {
-	return Object.keys(map);
-};
-webpackContext.resolve = webpackContextResolve;
-module.exports = webpackContext;
-webpackContext.id = 416;
-
-/***/ }),
-
-/***/ 46:
+/***/ 42:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ReportProvider; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(162);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1412,11 +1365,22 @@ var ReportProvider = /** @class */ (function () {
         this.url = 'http://cgi.uru.ac.th/service';
         this.www3 = 'http://www3.cgistln.nu.ac.th/geoserver/lsnanbasin/ows?';
     }
-    ReportProvider.prototype.getRain = function () {
+    ReportProvider.prototype.getRain = function (lat, lon) {
         var _this = this;
         return new Promise(function (resolve, reject) {
             _this.http.get(_this.www3 + 'service=WFS&version=1.0.0&request=GetFeature&typeName=lsnanbasin:vhex_service&CQL_FILTER=INTERSECTS(geom,POINT(' +
-                '100.95304%2019.01781))&outputFormat=application%2Fjson').subscribe(function (res) {
+                lon + '%20' + lat + '))&outputFormat=application%2Fjson').subscribe(function (res) {
+                resolve(res);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+    ReportProvider.prototype.getVill10Km = function (lon, lat, r) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            _this.http.get(_this.www3 + 'service=WFS&version=1.0.0&request=GetFeature&typeName=lsnanbasin%3Avillage_detect_final&CQL_FILTER=DWITHIN(geom,POINT(' +
+                lon + ' ' + lat + '),' + r + ',meters)&outputFormat=application%2Fjson').subscribe(function (res) {
                 resolve(res);
             }, function (error) {
                 reject(error);
@@ -1454,15 +1418,14 @@ var ReportProvider = /** @class */ (function () {
     };
     ReportProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]) === "function" && _a || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]])
     ], ReportProvider);
     return ReportProvider;
-    var _a;
 }());
 
 //# sourceMappingURL=report.js.map
 
 /***/ })
 
-},[209]);
+},[333]);
 //# sourceMappingURL=main.js.map

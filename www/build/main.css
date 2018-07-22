@@ -25717,7 +25717,7 @@ ion-navbar.toolbar {
 
 page-detail #map2 {
   width: 100%;
-  height: 40%;
+  height: 60%;
 }
 
 page-home #map {
@@ -25767,6 +25767,10 @@ page-list .kanit {
 
 page-list h3 {
   font-family: 'Kanit';
+}
+
+page-list .bg {
+  background-color: #e7eafa;
 }
 
 page-report {
