@@ -1,5 +1,5 @@
-import { Component, ChangeDetectorRef, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Content, LoadingController } from 'ionic-angular';
+import { Component, ChangeDetectorRef } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { ReportProvider } from '../../providers/report/report';
 import { DetailPage } from '../detail/detail';
 import * as moment from 'moment';
@@ -17,6 +17,7 @@ export class ListPage {
   public rainAVWeek: any;
   public ls_risk: number;
   public warning: any;
+  public vill10Km: any;
 
   public pos: any;
 
@@ -32,9 +33,8 @@ export class ListPage {
 
 
   ionViewDidLoad() {
-    // this.loadReport();
-    // this.content.enableScrollListener();
     this.loadRain(this.pos.lat, this.pos.lon)
+    // this.loadVill10Km()
   }
 
   loadRain(lat: number, lon: number) {
@@ -46,12 +46,8 @@ export class ListPage {
       this.rainnow = this.reports.raincur;
       this.rain7day = this.reports.rain7day;
       this.rain2018 = this.reports.rain2018;
-
       this.ls_risk = this.reports.ls_risk;
-
-
       this.rainAVWeek = this.reports[wk];
-
       if (this.rainnow > 100 && this.ls_risk == 3) {
         this.warning = 'อพยพ'
       } else if (this.rainnow > 100 && this.ls_risk <= 2) {
@@ -61,16 +57,19 @@ export class ListPage {
       } else {
         this.warning = 'เฝ้าระวัง'
       }
-
-
     }, error => {
       console.log(error)
     })
   }
 
-  calWeekNumber() {
-    console.log()
-  }
+  // loadVill10Km() {
+  //   this.reportProvider.getVill10Km().then((res: any) => {
+
+  //     this.vill10Km = res.features[0].properties.vill_nam_t;
+
+  //     console.log(this.vill10Km)
+  //   })
+  // }
 
   async loadReport() {
     let loader = this.loadingCtrl.create({
@@ -89,8 +88,8 @@ export class ListPage {
     })
   }
 
-  viewReportDetail(r: any) {
-    this.navCtrl.push(DetailPage, { data: r })
+  viewReportDetail() {
+    this.navCtrl.push(DetailPage, { data: [this.pos.lat, this.pos.lon] })
     // console.log(r)
   }
 

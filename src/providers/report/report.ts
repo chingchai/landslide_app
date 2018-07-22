@@ -26,6 +26,17 @@ export class ReportProvider {
     })
   }
 
+  getVill10Km(lon: number, lat: number, r: number) {
+    return new Promise((resolve, reject) => {
+      this.http.get(this.www3 + 'service=WFS&version=1.0.0&request=GetFeature&typeName=lsnanbasin%3Avillage_detect_final&CQL_FILTER=DWITHIN(geom,POINT(' +
+        lon + ' ' + lat + '),' + r + ',meters)&outputFormat=application%2Fjson').subscribe((res: any) => {
+          resolve(res)
+        }, (error) => {
+          reject(error)
+        })
+    })
+  }
+
   getReportList() {
     return new Promise((resolve, reject) => {
       this.http.get(this.url + '/udsafe_show_report.php').subscribe((res: any) => {
