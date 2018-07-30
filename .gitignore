@@ -62,3 +62,7 @@ typings/
 
 # sourcemaps file
 .sourcemaps/
+
+# ionic platform and plugins
+platforms/
+plugins/
