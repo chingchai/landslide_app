@@ -100,7 +100,7 @@ export class DetailPage {
   loadVill(lon: number, lat: number, r: number) {
     this.reportProvider.getVill10Km(lon, lat, r).then((res: any) => {
       this.vill10Km = res.features;
-      console.log(this.vill10Km)
+      // console.log(this.vill10Km)
     })
   }
 

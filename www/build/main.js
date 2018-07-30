@@ -4,6 +4,112 @@ webpackJsonp([4],{
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DetailPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_leaflet__ = __webpack_require__(160);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_leaflet___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_leaflet__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet_gridlayer_googlemutant__ = __webpack_require__(161);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet_gridlayer_googlemutant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_leaflet_gridlayer_googlemutant__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_report_report__ = __webpack_require__(42);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var DetailPage = /** @class */ (function () {
+    function DetailPage(navCtrl, navParams, reportProvider) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.reportProvider = reportProvider;
+        this.dat = this.navParams.get('data');
+    }
+    DetailPage.prototype.ionViewDidLoad = function () {
+        // console.log(this.dat);
+        this.loadMap();
+    };
+    DetailPage.prototype.loadMap = function () {
+        this.map = __WEBPACK_IMPORTED_MODULE_2_leaflet__["map"]('map2', {
+            center: [18.00, 100.50],
+            zoom: 8,
+            zoomControl: false,
+            attributionControl: false,
+        });
+        // base map
+        this.roads = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"]('http://{s}.google.com/vt/lyrs=r&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+        });
+        this.satellite = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"]('http://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+        });
+        this.hybrid = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"]('http://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+        });
+        this.terrain = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"]('http://{s}.google.com/vt/lyrs=t,m&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+        });
+        // overlay
+        var r = 30000;
+        this.ud_vill = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"].wms("http://www3.cgistln.nu.ac.th/geoserver/ows?", {
+            layers: 'lsnanbasin:village_detect_final',
+            format: 'image/png',
+            transparent: true,
+            CQL_FILTER: 'DWITHIN(geom,Point(' + this.dat[1] + ' ' + this.dat[0] + '),' + r + ',meters)',
+            zIndex: 5
+        });
+        this.pos = [this.dat[0], this.dat[1]];
+        this.map.setView(this.pos, 16);
+        this.marker = __WEBPACK_IMPORTED_MODULE_2_leaflet__["marker"](this.pos, { draggable: false }).addTo(this.map);
+        this.lyrGroup = {
+            lyr: [
+                { name: 'หมู่บ้าน', lyr: 'ud_vill', wms: this.ud_vill.addTo(this.map), type: 'overlay', 'isChecked': false },
+                { name: 'แผนที่ถนน', lyr: 'roads', wms: this.roads, type: 'base', 'isChecked': false },
+                { name: 'แผนที่ภาพดาวเทียม', lyr: 'satellite', wms: this.satellite, type: 'base', 'isChecked': false },
+                { name: 'แผนที่ผสม', lyr: 'hybrid', wms: this.hybrid, type: 'base', 'isChecked': false },
+                { name: 'แผนที่ภูมิประเทศ', lyr: 'terrain', wms: this.terrain.addTo(this.map), type: 'base', 'isChecked': true },
+            ]
+        };
+        // L.control.layers(baseLayers, overlay, { position: 'topright' }).addTo(this.map);
+        this.loadVill(this.dat[1], this.dat[0], r);
+    };
+    DetailPage.prototype.loadVill = function (lon, lat, r) {
+        var _this = this;
+        this.reportProvider.getVill10Km(lon, lat, r).then(function (res) {
+            _this.vill10Km = res.features;
+            // console.log(this.vill10Km)
+        });
+    };
+    DetailPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-detail',template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\detail\detail.html"*/'<ion-header class="kanit">\n\n\n\n  <ion-navbar>\n\n    <ion-title>หมู่บ้านในรัศมี 10 กิโลเมตร</ion-title>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content padding class="kanit">\n\n\n\n  <div id="map2" class="map2"></div>\n\n  <p></p>\n\n  <ion-list>\n\n    <ion-list-header>\n\n      <h1>หมู่บ้านในรัศมี 10 กิโลเมตร</h1>\n\n    </ion-list-header>\n\n    <ion-item *ngFor="let v of vill10Km">{{v.properties.vill_nam_t}}</ion-item>\n\n  </ion-list>\n\n\n\n</ion-content>'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\detail\detail.html"*/,
+        }),
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__providers_report_report__["a" /* ReportProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__providers_report_report__["a" /* ReportProvider */]) === "function" && _c || Object])
+    ], DetailPage);
+    return DetailPage;
+    var _a, _b, _c;
+}());
+
+//# sourceMappingURL=detail.js.map
+
+/***/ }),
+
+/***/ 103:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LayerPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(19);
@@ -85,15 +191,15 @@ var LayerPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 103:
+/***/ 104:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ListPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_report_report__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__detail_detail__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_report_report__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__detail_detail__ = __webpack_require__(102);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_moment__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -226,119 +332,16 @@ var ListPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-list',template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\list\list.html"*/'<ion-header class="kanit">\n\n\n\n  <ion-navbar>\n\n    <ion-title>แจ้งเตือน</ion-title>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content padding class="kanit">\n\n\n\n  <ion-card class="bg">\n\n    <ion-card-header>\n\n      สถานการณ์เตือนภัย\n\n    </ion-card-header>\n\n    <ion-card-content>\n\n      <ion-item class="bg">\n\n        <ion-avatar item-start>\n\n          <img src="./assets/icon/drop3.png">\n\n        </ion-avatar>\n\n        <h1>{{ warning }}</h1>\n\n        <p>gfdhgghgdjsdsgsgsdgsdgsgsgsgsgsgsf</p>\n\n      </ion-item>\n\n      <ion-row>\n\n        <ion-col>\n\n        </ion-col>\n\n        <ion-col>\n\n        </ion-col>\n\n        <ion-col>\n\n          <button ion-button icon-start clear (click)="viewReportDetail()">\n\n            <ion-icon name="text"></ion-icon>\n\n            <div>หมู่บ้านในรัศมี 10 กม.</div>\n\n          </button>\n\n        </ion-col>\n\n      </ion-row>\n\n\n\n    </ion-card-content>\n\n  </ion-card>\n\n\n\n  <!-- \n\n  <ion-card class="bg">\n\n    <ion-card-header>\n\n      หมู่บ้านในรัศมี 10 กม.\n\n    </ion-card-header>\n\n    <ion-card-content>\n\n    </ion-card-content>\n\n  </ion-card> -->\n\n\n\n\n\n  <ion-card class="bg">\n\n    <ion-card-header>\n\n      ปริมาณน้ำฝนปัจจุบัน (24 ชม)\n\n    </ion-card-header>\n\n    <ion-card-content>\n\n      <ion-item class="bg">\n\n        <ion-avatar item-start>\n\n          <img src="./assets/icon/drop3.png">\n\n        </ion-avatar>\n\n        <h1> {{ rainnow | number : \'1.2-2\' }} มม. </h1>\n\n        <p>gfdhgghgdjf</p>\n\n      </ion-item>\n\n    </ion-card-content>\n\n  </ion-card>\n\n\n\n  <ion-card class="bg">\n\n    <ion-card-header>\n\n      ปริมาณน้ำฝนสะสม 7 วันที่ผ่านมา\n\n    </ion-card-header>\n\n    <ion-card-content>\n\n      <ion-item class="bg">\n\n        <ion-avatar item-start>\n\n          <img src="./assets/icon/drop5.png">\n\n        </ion-avatar>\n\n        <h1>{{ rain7day | number : \'1.2-2\' }} มม.</h1>\n\n        <p>gfdhgghgdjf</p>\n\n      </ion-item>\n\n    </ion-card-content>\n\n  </ion-card>\n\n\n\n  <ion-card class="bg">\n\n    <ion-card-header>\n\n      ปริมาณน้ำฝนสะสม (1 ม.ค. ถึงปัจจุบัน)\n\n    </ion-card-header>\n\n    <ion-card-content>\n\n      <ion-item class="bg">\n\n        <ion-avatar item-start>\n\n          <img src="./assets/icon/rain2.png">\n\n        </ion-avatar>\n\n        <h1> {{ rain2018 | number : \'1.2-2\' }} มม.</h1>\n\n        <p>gfdhgghgdjf</p>\n\n      </ion-item>\n\n    </ion-card-content>\n\n  </ion-card>\n\n\n\n  <ion-card class="bg">\n\n    <ion-card-header>\n\n      ปริมาณน้ำฝนเฉลี่ย 30 ปี ของสัปดาห์ปัจจุบัน\n\n    </ion-card-header>\n\n    <ion-card-content>\n\n      <ion-item class="bg">\n\n        <ion-avatar item-start>\n\n          <img src="./assets/icon/water.png">\n\n        </ion-avatar>\n\n        <h1>{{ rainAVWeek | number : \'1.2-2\' }} มม.</h1>\n\n        <p>gfdhgghgdjf</p>\n\n      </ion-item>\n\n    </ion-card-content>\n\n  </ion-card>\n\n\n\n\n\n\n\n</ion-content>'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\list\list.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* ChangeDetectorRef */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__providers_report_report__["a" /* ReportProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_report_report__["a" /* ReportProvider */]) === "function" && _e || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* ChangeDetectorRef */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */],
+            __WEBPACK_IMPORTED_MODULE_2__providers_report_report__["a" /* ReportProvider */]])
     ], ListPage);
     return ListPage;
-    var _a, _b, _c, _d, _e;
 }());
 
 //# sourceMappingURL=list.js.map
-
-/***/ }),
-
-/***/ 104:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DetailPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_leaflet__ = __webpack_require__(161);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_leaflet___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_leaflet__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet_gridlayer_googlemutant__ = __webpack_require__(162);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet_gridlayer_googlemutant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_leaflet_gridlayer_googlemutant__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_report_report__ = __webpack_require__(47);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-var DetailPage = /** @class */ (function () {
-    function DetailPage(navCtrl, navParams, reportProvider) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.reportProvider = reportProvider;
-        this.dat = this.navParams.get('data');
-    }
-    DetailPage.prototype.ionViewDidLoad = function () {
-        // console.log(this.dat);
-        this.loadMap();
-    };
-    DetailPage.prototype.loadMap = function () {
-        this.map = __WEBPACK_IMPORTED_MODULE_2_leaflet__["map"]('map2', {
-            center: [18.00, 100.50],
-            zoom: 8,
-            zoomControl: false,
-            attributionControl: false,
-        });
-        // base map
-        this.roads = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"]('http://{s}.google.com/vt/lyrs=r&x={x}&y={y}&z={z}', {
-            maxZoom: 20,
-            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-        });
-        this.satellite = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"]('http://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
-            maxZoom: 20,
-            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-        });
-        this.hybrid = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"]('http://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
-            maxZoom: 20,
-            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-        });
-        this.terrain = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"]('http://{s}.google.com/vt/lyrs=t,m&x={x}&y={y}&z={z}', {
-            maxZoom: 20,
-            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-        });
-        // overlay
-        var r = 30000;
-        this.ud_vill = __WEBPACK_IMPORTED_MODULE_2_leaflet__["tileLayer"].wms("http://www3.cgistln.nu.ac.th/geoserver/ows?", {
-            layers: 'lsnanbasin:village_detect_final',
-            format: 'image/png',
-            transparent: true,
-            CQL_FILTER: 'DWITHIN(geom,Point(' + this.dat[1] + ' ' + this.dat[0] + '),' + r + ',meters)',
-            zIndex: 5
-        });
-        this.pos = [this.dat[0], this.dat[1]];
-        this.map.setView(this.pos, 16);
-        this.marker = __WEBPACK_IMPORTED_MODULE_2_leaflet__["marker"](this.pos, { draggable: false }).addTo(this.map);
-        this.lyrGroup = {
-            lyr: [
-                { name: 'หมู่บ้าน', lyr: 'ud_vill', wms: this.ud_vill.addTo(this.map), type: 'overlay', 'isChecked': false },
-                { name: 'แผนที่ถนน', lyr: 'roads', wms: this.roads, type: 'base', 'isChecked': false },
-                { name: 'แผนที่ภาพดาวเทียม', lyr: 'satellite', wms: this.satellite, type: 'base', 'isChecked': false },
-                { name: 'แผนที่ผสม', lyr: 'hybrid', wms: this.hybrid, type: 'base', 'isChecked': false },
-                { name: 'แผนที่ภูมิประเทศ', lyr: 'terrain', wms: this.terrain.addTo(this.map), type: 'base', 'isChecked': true },
-            ]
-        };
-        // L.control.layers(baseLayers, overlay, { position: 'topright' }).addTo(this.map);
-        this.loadVill(this.dat[1], this.dat[0], r);
-    };
-    DetailPage.prototype.loadVill = function (lon, lat, r) {
-        var _this = this;
-        this.reportProvider.getVill10Km(lon, lat, r).then(function (res) {
-            _this.vill10Km = res.features;
-            console.log(_this.vill10Km);
-        });
-    };
-    DetailPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-detail',template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\detail\detail.html"*/'<ion-header class="kanit">\n\n\n\n  <ion-navbar>\n\n    <ion-title>หมู่บ้านในรัศมี 10 กิโลเมตร</ion-title>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content padding class="kanit">\n\n\n\n  <div id="map2" class="map2"></div>\n\n  <p></p>\n\n  <ion-list>\n\n    <ion-list-header>\n\n      <h1>หมู่บ้านในรัศมี 10 กิโลเมตร</h1>\n\n    </ion-list-header>\n\n    <ion-item *ngFor="let v of vill10Km">{{v.properties.vill_nam_t}}</ion-item>\n\n  </ion-list>\n\n\n\n</ion-content>'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\detail\detail.html"*/,
-        }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__providers_report_report__["a" /* ReportProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__providers_report_report__["a" /* ReportProvider */]) === "function" && _c || Object])
-    ], DetailPage);
-    return DetailPage;
-    var _a, _b, _c;
-}());
-
-//# sourceMappingURL=detail.js.map
 
 /***/ }),
 
@@ -350,7 +353,7 @@ var DetailPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__ = __webpack_require__(286);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_report_report__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_report_report__ = __webpack_require__(42);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -505,19 +508,19 @@ webpackEmptyAsyncContext.id = 117;
 
 var map = {
 	"../pages/detail/detail.module": [
-		416,
+		413,
 		3
 	],
 	"../pages/layer/layer.module": [
-		413,
+		414,
 		2
 	],
 	"../pages/list/list.module": [
-		414,
+		415,
 		1
 	],
 	"../pages/report/report.module": [
-		415,
+		416,
 		0
 	]
 };
@@ -545,7 +548,7 @@ module.exports = webpackAsyncContext;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contact_contact__ = __webpack_require__(330);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home_home__ = __webpack_require__(331);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__list_list__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__list_list__ = __webpack_require__(104);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -601,7 +604,7 @@ var ContactPage = /** @class */ (function () {
     }
     ContactPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-contact',template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\contact\contact.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>\n\n      Contact\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content>\n\n  <ion-list>\n\n    <ion-list-header>Follow us on Twitter</ion-list-header>\n\n    <ion-item>\n\n      <ion-icon name="ionic" item-start></ion-icon>\n\n      ปปปปปปปปxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n\n    </ion-item>\n\n  </ion-list>\n\n</ion-content>'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\contact\contact.html"*/
+            selector: 'page-contact',template:/*ion-inline-start:"C:\_dev_prod\landslide_app\src\pages\contact\contact.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>\n\n      Contact\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content>\n\n\n\n\n\n  <ion-card>\n\n    <ion-card-content>\n\n      <img src="../../assets/logo/logo4.png" />\n\n      <p></p>\n\n      <hr>\n\n      <p>สถานภูมิภาคเทคโนโลยีอวกาศและภูมิสารสนเทศ ภาคเหนือตอนล่าง มหาวิทยาลัยนเรศวร</p>\n\n      <p>Regional Center of Geo-Informatics and Space Technology, Lower Northern Region, Naresuan University</p>\n\n    </ion-card-content>\n\n  </ion-card>\n\n</ion-content>'/*ion-inline-end:"C:\_dev_prod\landslide_app\src\pages\contact\contact.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]])
     ], ContactPage);
@@ -619,14 +622,14 @@ var ContactPage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_leaflet__ = __webpack_require__(161);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_leaflet__ = __webpack_require__(160);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_leaflet___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_leaflet__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet_gridlayer_googlemutant__ = __webpack_require__(162);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet_gridlayer_googlemutant__ = __webpack_require__(161);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leaflet_gridlayer_googlemutant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_leaflet_gridlayer_googlemutant__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_geolocation__ = __webpack_require__(332);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__report_report__ = __webpack_require__(105);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_report_report__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__layer_layer__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_report_report__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__layer_layer__ = __webpack_require__(103);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -898,14 +901,14 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_tabs_tabs__ = __webpack_require__(329);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_status_bar__ = __webpack_require__(327);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_splash_screen__ = __webpack_require__(328);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__providers_report_report__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_detail_detail__ = __webpack_require__(104);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_list_list__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__providers_report_report__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_detail_detail__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_list_list__ = __webpack_require__(104);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_report_report__ = __webpack_require__(105);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__angular_common_http__ = __webpack_require__(160);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__angular_common_http__ = __webpack_require__(162);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__ionic_native_geolocation__ = __webpack_require__(332);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__ionic_native_camera__ = __webpack_require__(286);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_layer_layer__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_layer_layer__ = __webpack_require__(103);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -951,10 +954,10 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_14__angular_common_http__["b" /* HttpClientModule */],
                 __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* MyApp */], {}, {
                     links: [
+                        { loadChildren: '../pages/detail/detail.module#DetailPageModule', name: 'DetailPage', segment: 'detail', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/layer/layer.module#LayerPageModule', name: 'LayerPage', segment: 'layer', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/list/list.module#ListPageModule', name: 'ListPage', segment: 'list', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/report/report.module#ReportPageModule', name: 'ReportPage', segment: 'report', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/detail/detail.module#DetailPageModule', name: 'DetailPage', segment: 'detail', priority: 'low', defaultHistory: [] }
+                        { loadChildren: '../pages/report/report.module#ReportPageModule', name: 'ReportPage', segment: 'report', priority: 'low', defaultHistory: [] }
                     ]
                 })
             ],
@@ -1337,12 +1340,12 @@ var AboutPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 47:
+/***/ 42:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ReportProvider; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(160);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(162);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1414,10 +1417,9 @@ var ReportProvider = /** @class */ (function () {
     };
     ReportProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]) === "function" && _a || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]])
     ], ReportProvider);
     return ReportProvider;
-    var _a;
 }());
 
 //# sourceMappingURL=report.js.map
