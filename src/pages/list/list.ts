@@ -20,6 +20,7 @@ export class ListPage {
   public vill10Km: any;
 
   public pos: any;
+  public typ: any;
 
   constructor(
     public navCtrl: NavController,
@@ -50,12 +51,15 @@ export class ListPage {
       this.rainAVWeek = this.reports[wk];
       if (this.rainnow > 100 && this.ls_risk == 3) {
         this.warning = 'อพยพ'
+        this.typ = 'a'
       } else if (this.rainnow > 100 && this.ls_risk <= 2) {
         this.warning = 'เตือนภัย'
       } else if (this.rainnow <= 100 && this.ls_risk == 3) {
         this.warning = 'เฝ้าระวัง'
+        this.typ = 'b'
       } else {
         this.warning = 'เฝ้าระวัง'
+        this.typ = 'c'
       }
     }, error => {
       console.log(error)

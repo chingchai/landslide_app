@@ -9,33 +9,96 @@
 
 <ion-content padding class="kanit">
 
-  <ion-card class="bg">
-    <ion-card-header>
-      สถานการณ์เตือนภัย
-    </ion-card-header>
-    <ion-card-content>
-      <ion-item class="bg">
-        <ion-avatar item-start>
-          <img src="./assets/icon/drop3.png">
-        </ion-avatar>
-        <h1>{{ warning }}</h1>
-        <p>gfdhgghgdjsdsgsgsdgsdgsgsgsgsgsgsf</p>
-      </ion-item>
-      <ion-row>
-        <ion-col>
-        </ion-col>
-        <ion-col>
-        </ion-col>
-        <ion-col>
-          <button ion-button icon-start clear (click)="viewReportDetail()">
-            <ion-icon name="text"></ion-icon>
-            <div>หมู่บ้านในรัศมี 10 กม.</div>
-          </button>
-        </ion-col>
-      </ion-row>
+  <div *ngIf="typ === 'a'">
+    <ion-card class="bg-a">
+      <ion-card-header>
+        สถานการณ์เตือนภัย
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item class="bg-a">
+          <ion-avatar item-start>
+            <img src="./assets/icon/drop3.png">
+          </ion-avatar>
+          <h1>{{ warning }}</h1>
+          <!-- <p>gfdhgghgdjsdsgsgsdgsdgsgsgsgsgsgsf</p> -->
+        </ion-item>
+        <ion-row>
+          <ion-col>
+          </ion-col>
+          <ion-col>
+          </ion-col>
+          <ion-col>
+            <button ion-button icon-start clear (click)="viewReportDetail()">
+              <ion-icon name="text"></ion-icon>
+              <div>หมู่บ้านในรัศมี 10 กม.</div>
+            </button>
+          </ion-col>
+        </ion-row>
 
-    </ion-card-content>
-  </ion-card>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div *ngIf="typ === 'b'">
+    <ion-card class="bg-b">
+      <ion-card-header>
+        สถานการณ์เตือนภัย
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item class="bg-b">
+          <ion-avatar item-start>
+            <img src="./assets/icon/drop3.png">
+          </ion-avatar>
+          <h1>{{ warning }}</h1>
+          <!-- <p>gfdhgghgdjsdsgsgsdgsdgsgsgsgsgsgsf</p> -->
+        </ion-item>
+        <ion-row>
+          <ion-col>
+          </ion-col>
+          <ion-col>
+          </ion-col>
+          <ion-col>
+            <button ion-button icon-start clear (click)="viewReportDetail()">
+              <ion-icon name="text"></ion-icon>
+              <div>หมู่บ้านในรัศมี 10 กม.</div>
+            </button>
+          </ion-col>
+        </ion-row>
+
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div *ngIf="typ === 'c'">
+    <ion-card class="bg-c">
+      <ion-card-header>
+        สถานการณ์เตือนภัย
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item class="bg-c">
+          <ion-avatar item-start>
+            <img src="./assets/icon/drop3.png">
+          </ion-avatar>
+          <h1>{{ warning }}</h1>
+          <!-- <p>gfdhgghgdjsdsgsgsdgsdgsgsgsgsgsgsf</p> -->
+        </ion-item>
+        <ion-row>
+          <ion-col>
+          </ion-col>
+          <ion-col>
+          </ion-col>
+          <ion-col>
+            <button ion-button icon-start clear (click)="viewReportDetail()">
+              <ion-icon name="text"></ion-icon>
+              <div>หมู่บ้านในรัศมี 10 กม.</div>
+            </button>
+          </ion-col>
+        </ion-row>
+
+      </ion-card-content>
+    </ion-card>
+  </div>
+
 
   <!-- 
   <ion-card class="bg">
@@ -57,7 +120,7 @@
           <img src="./assets/icon/drop3.png">
         </ion-avatar>
         <h1> {{ rainnow | number : '1.2-2' }} มม. </h1>
-        <p>gfdhgghgdjf</p>
+        <!-- <p>gfdhgghgdjf</p> -->
       </ion-item>
     </ion-card-content>
   </ion-card>
@@ -72,7 +135,7 @@
           <img src="./assets/icon/drop5.png">
         </ion-avatar>
         <h1>{{ rain7day | number : '1.2-2' }} มม.</h1>
-        <p>gfdhgghgdjf</p>
+        <!-- <p>gfdhgghgdjf</p> -->
       </ion-item>
     </ion-card-content>
   </ion-card>
@@ -87,7 +150,7 @@
           <img src="./assets/icon/rain2.png">
         </ion-avatar>
         <h1> {{ rain2018 | number : '1.2-2' }} มม.</h1>
-        <p>gfdhgghgdjf</p>
+        <!-- <p>gfdhgghgdjf</p> -->
       </ion-item>
     </ion-card-content>
   </ion-card>
@@ -102,7 +165,7 @@
           <img src="./assets/icon/water.png">
         </ion-avatar>
         <h1>{{ rainAVWeek | number : '1.2-2' }} มม.</h1>
-        <p>gfdhgghgdjf</p>
+        <!-- <p>gfdhgghgdjf</p> -->
       </ion-item>
     </ion-card-content>
   </ion-card>

@@ -26280,11 +26280,6 @@ page-home .scroll-content {
   background: #1e1e1e;
 }
 
-page-home ion-navbar .toolbar-background {
-  background: transparent;
-  background: rgba(255, 255, 255, 0.7) !important;
-}
-
 page-home ion-content .scroll-content {
   margin-top: 0px !important;
 }
@@ -26297,8 +26292,25 @@ page-list h3 {
   font-family: 'Kanit';
 }
 
+page-list .w {
+  font-family: 'Kanit';
+  color: #e7eafa;
+}
+
 page-list .bg {
   background-color: #e7eafa;
+}
+
+page-list .bg-a {
+  background-color: #ff0505;
+}
+
+page-list .bg-b {
+  background-color: #fff71d;
+}
+
+page-list .bg-c {
+  background-color: #10c207;
 }
 
 page-report {
